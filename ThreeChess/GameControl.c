@@ -1,103 +1,66 @@
 #include "GameControl.h"
-#include "BoardAction.h"
 #include<stdlib.h>
 #include<time.h>
-char FirstPlayer='-';
-char PlayerChequer='-';
-char ComputerChequer='-';
-int printMenu(char* tips){
-    char option;
-    system("cls");
-    printf("**************\n");
-    printf("**ThreeChess**\n");
-    printf("**************\n");
-    printf("              \n");
-    printf(" [1]--Play--  \n");
-    printf(" [2]--Exit--  \n");
-    printf("              \n");
-    printf("%s",tips);
-    scanf("%c",&option);
-    fflush(stdin);
-    if(option<'1'||option>'2')
-        printMenu("Please enter incorrect option:");
-    return option-48;
-}
-void menuControl(unsigned int option){
-    if(option==2)
-        exit(1);
-    playerInitalize();
-    chessboardInitalize('-');
-    startGame();
-}
-int getOption(char* title,char* options[],unsigned int n,char* tips){
+static char currChequer='-';
+static char playerChequer='-';
+static char computerChequer='-';
+static int getOption(char* title,char* options[],unsigned int n){
     int i=0;
-    char option;
-    system("cls");
+    int option=-1;
     printf("%s\n",title);
     for(;i<n-1;++i){
-        printf("[%d] %s or",i+1,options[i]); 
+        printf("[%d] %s or ",i+1,options[i]); 
     }
     printf("[%d] %s\n",i+1,options[i]);
-    printf("%s",tips);
-    fflush(stdin);
-    scanf("%c",&option);
-    fflush(stdin);
-    if(option<'1'||option>(n+48))
-        getOption(title,options,n,"Please enter incorrect option.\n");
-    return option-48;
+    while(scanf("%d",&option)!=1){
+        printf("enter[ 1-%d ]:",n);
+        scanf("%*s");
+    }
+    if(option<0||option>=n){
+        printf("error option,system will give a automatic selection!\n");
+        option=-1;
+    }
+    return option;
 }
-
-void playerInitalize(){
-    char *chequers[]={"O","X"};
-    char *players[]={"player","computer"};
+static int getPlayerOption(){
+    int option=-1;
+    if(scanf("%d",&option)!=1)
+        scanf("%*s");
+    return option-1;
+}
+static int getComputerOption(){
+    return rand()%9+1;
+}
+void initalizeGame(char firstChequer,char secondChequer){
+    char* chequers[]={(char*)&firstChequer,(char*)&secondChequer};
+    chequers[0][1]='\0';
+    chequers[1][1]='\0';
+    char* players[]={"player","computer"};
     int choose=0;
-    choose=getOption("Chequer Option",chequers,2,"[1-2]:");
-    PlayerChequer=(choose==1?'O':'X');
-    ComputerChequer=(choose==1?'X':'O');
-    choose=getOption("Player Option",players,2,"[1-2]:");
-    FirstPlayer=(choose==1?'P':'C');
-}
-void startGame(){
-    if(FirstPlayer=='P')
-        player(PlayerChequer);
-    while(1){
-        computer(ComputerChequer);
-        player(PlayerChequer);
-    }
-}
-void gameSettle(char chequer){
-    if(chequer==PlayerChequer)
-        printChessBoard("Game Over","Player Wins!\n");
-    else if(chequer==ComputerChequer)
-        printChessBoard("Game Over","Computer Wins!\n");
-    else
-        printChessBoard("Game Over","No One Wins!\n");
-    system("pause");
-    exit(1);
-}
-void player(char chequer){
-    char num;
-    printChessBoard("Game Running","Please push your chequer.\nUsing number 1-9:");
-    fflush(stdin);
-    scanf("%c",&num);
-    while(judgeInvailed(num-49)){
-        printChessBoard("Game Running","The position is valied.\n");
-        printf("Please choose again:\n");
-        fflush(stdin);
-        scanf("%c",&num);
-    }
-    printChessBoard("Game Running","Player push the chequer.\n");
-    printf("Player push to postion %d\n",num-48);
-    addChequer(chequer,num-49);
-    chequerJudge(num-49,gameSettle);
-}
-void computer(char chequer){
+    choose=getOption("Chequer Option",chequers,2);
+    playerChequer=(choose==1?firstChequer:secondChequer);
+    computerChequer=(choose==1?secondChequer:firstChequer);
+    choose=getOption("Player Option",players,2);
+    currChequer=(choose==1?playerChequer:computerChequer);
     srand((unsigned)time(NULL));
-    int num=rand()%9+1;
-    while(judgeInvailed(num))
-        num=rand()%9+1;
-    printChessBoard("Game Running","Computer push the chequer.\n");
-    printf("Computer push to postion %d\n",num+1);
-    addChequer(chequer,num);
-    chequerJudge(num,gameSettle);
+}
+int playChess(){
+    if(currChequer==computerChequer)
+        return getComputerOption();
+    if(currChequer==playerChequer)
+        return getPlayerOption();
+    return -1;
+}
+char getCurrChequer(){
+    return currChequer;
+}
+void switchToNextPlayer(){
+    currChequer=(currChequer==playerChequer)?(computerChequer):(playerChequer);
+}
+const char* getWinner(char chequer){
+    if(chequer==playerChequer)
+        return "Player Wins!";
+    if(chequer==computerChequer)
+        return "Computer Wins!";
+    return "No one Wins!";
 }
