@@ -9,6 +9,6 @@ void showGameScreen();
 bool isInvaild(int pos);
 int getAPoint();
 int getPointByIndex(int pos);
-int addPoint(int pos,char point);
+void addPoint(int pos,char point);
 void delPoint(int pos);
 #endif

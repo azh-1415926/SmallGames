@@ -56,6 +56,49 @@ int movePoint(int pos,int flag){
     lastAction=flag;
     return pos;
 }
-void* getUserControl(void*  arg){
+int getUserControl(){
+    char ch;
+    int action;
+    #if _WIN32
+    if(!kbhit()){
+        Sleep(1000);
+    }
+    if(kbhit()){
+        ch=getch();
+    }
+    #elif __linux__
 
+    #endif
+    int moveAction=0;
+    switch (ch)
+    {
+    case 56:
+    case 119:
+        /* front */
+        printf("Go to front!\n");
+        action=MOVE_FRONT;
+        break;
+    case 52:
+    case 97:
+        /* left */
+        printf("Go to left!\n");
+        action=MOVE_LEFT;
+        break;
+    case 50:
+    case 115:
+        /* behind */
+        printf("Go to behind!\n");
+        action=MOVE_BEHIND;
+        break;    
+    case 54:
+    case 100:
+        /* right */
+        printf("Go to right!\n");
+        action=MOVE_RIGHT;
+        break;
+    default:
+        action=-1;
+        break;
+    }
+    return action;
 }

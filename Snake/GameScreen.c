@@ -64,12 +64,8 @@ int getAPoint(){
 int getPointByIndex(int pos){
     return pScreen[pos];
 }
-int addPoint(int pos,char point){
-    char temp=pScreen[pos];
+void addPoint(int pos,char point){
     pScreen[pos]=point;
-    if(temp==_filler)
-        return 0;
-    return -1;
 }
 void delPoint(int pos){
     pScreen[pos]=_filler;
