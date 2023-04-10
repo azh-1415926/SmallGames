@@ -32,9 +32,11 @@ static int getComputerOption(){
     return rand()%9+1;
 }
 void initalizeGame(char firstChequer,char secondChequer){
-    char* chequers[]={(char*)&firstChequer,(char*)&secondChequer};
-    chequers[0][1]='\0';
-    chequers[1][1]='\0';
+    char chequer_1[2]={0};
+    chequer_1[0]=firstChequer;
+    char chequer_2[2]={0};
+    chequer_2[0]=secondChequer;
+    char* chequers[]={chequer_1,chequer_2};
     char* players[]={"player","computer"};
     int choose=0;
     choose=getOption("Chequer Option",chequers,2);

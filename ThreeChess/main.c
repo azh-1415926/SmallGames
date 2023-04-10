@@ -15,6 +15,13 @@ int printMenu(char* tips,char* options[],unsigned int n){
         scanf("%*s");
     return option;
 }
+void clearScreen(){
+    #if _WIN32
+    system("cls");
+    #elif __linux__
+    system("clear");
+    #endif
+}
 int main(){
     char* menuOption[]={"Play Game!","Exit!"};
     int option=printMenu("Please enter:",menuOption,2);
@@ -40,7 +47,7 @@ int main(){
             chequer=getCurrChequer();
             switchToNextPlayer();
             addChequer(pos,chequer);
-            system("cls");
+            clearScreen();
             printf("  %s\n",boardTitle);
             printChessBoard();
             printf("lastChequer is set on postion %d.\n",pos+1);
@@ -49,14 +56,14 @@ int main(){
                     break;
                 case 1:
                     boardTitle="Game Over!";
-                    system("cls");
+                    clearScreen();
                     printf("  %s\n",boardTitle);
                     printChessBoard();
                     printf("%s\n",getWinner(chequer));
                     return 0;
                 case 0:
                     boardTitle="Game Over!";
-                    system("cls");
+                    clearScreen();
                     printf("  %s\n",boardTitle);
                     printChessBoard();
                     printf("%s\n",getWinner(filler));
