@@ -1,46 +1,31 @@
 #include "Snake.h"
-static char _head='Q';
-static char _body='O';
 static struct snake snakeBody={1,1,1};
 static int lastLength=1;
-void initalizeSnake(char head,char body){
-    _head=head;
-    _body=body;
-}
-void setSnakeHead(int pos){
+void initalizeSnake(int pos){
     snakeBody.head=pos;
     snakeBody.tail=snakeBody.head;
 }
-char getHead(){
-    return _head;
+int getHead(){
+    return snakeBody.head;
 }
-char getBody(){
-    return _body;
+int getTail(){
+    return snakeBody.tail;
 }
 void eatFood(){
     snakeBody.length++;
 }
 int moveSnakeHead(int pos){
     int temp=snakeBody.head;
-    if(pos!=-1){
-        snakeBody.head=pos;
-    }
+    snakeBody.head=pos;
     return temp;
 }
 int moveSnakeTail(int pos){
     int temp=snakeBody.tail;
-    printf("length:%d,",snakeBody.length);
     if(snakeBody.length==lastLength){
-        if(pos!=-1){
-            snakeBody.tail=pos;
-        }
+        snakeBody.tail=pos;
     }else{
-        printf("pos:%d\n",pos);
         temp=-1;
-        if(pos!=-1){
-            lastLength++;
-        }
+        lastLength++;
     }
-    printf("lastlength:%d\n",lastLength);
     return temp;
 }

@@ -15,7 +15,7 @@ int printMenu(char* tips,char* options[],unsigned int n){
         scanf("%*s");
     return option;
 }
-void clearScreen(){
+static void clearScreen(){
     #if _WIN32
     system("cls");
     #elif __linux__

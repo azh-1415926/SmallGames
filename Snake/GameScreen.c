@@ -9,6 +9,13 @@ static char _vertex='*';
 static char _topBorder='-';
 static char _leftBorder='|';
 static char* pScreen=NULL;
+static bool isInvaild(int pos){
+    if(pos<0||pos>=_rows*_columns)
+        return true;
+    if(pScreen[pos]==_vertex||pScreen[pos]==_topBorder||pScreen[pos]==_leftBorder)
+        return true;
+    return false;
+}
 void initalizeGameScreen(int rows,int columns,char filler){
     _rows=rows+2;
     _columns=columns+2;
@@ -47,13 +54,6 @@ void showGameScreen(){
             printf("%c",pScreen[i*_columns+j]);
         printf("\n");
     }
-}
-bool isInvaild(int pos){
-    if(pos<0||pos>=_rows*_columns)
-        return true;
-    if(pScreen[pos]==_vertex||pScreen[pos]==_topBorder||pScreen[pos]==_leftBorder)
-        return true;
-    return false;
 }
 int getAPoint(){
     int pos=-1;

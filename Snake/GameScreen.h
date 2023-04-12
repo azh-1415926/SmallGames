@@ -6,7 +6,6 @@ void initalizeGameScreen(int rows,int columns,char filler);
 void freeGameScreen();
 void setBoard(char vertex,char top,char left);
 void showGameScreen();
-bool isInvaild(int pos);
 int getAPoint();
 int getPointByIndex(int pos);
 void addPoint(int pos,char point);

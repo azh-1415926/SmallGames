@@ -4,6 +4,13 @@
 #include "GameControl.h"
 #include <stdlib.h>
 static linkQueue snakeShape=NULL;
+static void clearScreen(){
+    #if _WIN32
+    system("cls");
+    #elif __linux__
+    system("clear");
+    #endif
+}
 int main(){
     char _head='Q';
     char _body='O';
@@ -19,23 +26,14 @@ int main(){
     linkQueueInitalize(&snakeShape);
     initalizeGameScreen(_rows,_columns,_filler);
     initalizeGame(_rows,_columns);
-    initalizeSnake(_head,_body);
+    initalizeSnake(pos);
     setBoard('*','-','|');
-    setSnakeHead(pos);
-    addPoint(pos,getHead());
-    pos=getAPoint();
-    addPoint(pos,_food);
+    addPoint(getAPoint(),_food);
     showGameScreen();
-    int i=1;
     while(1){
-        pos=moveSnakeHead(-1);
-        //test
-        if(i==1){
-            addPoint(pos-2*(_columns+2),_food);
-            addPoint(pos-3*(_columns+2),_food);
-            i=0;
-        }
-        addPoint(pos,getHead());
+        pos=getHead();
+        addPoint(pos,_head);
+        clearScreen();
         showGameScreen();
         currAction=getUserControl();
         if(moveIsInvaild(currAction)){
@@ -49,34 +47,27 @@ int main(){
         ch=getPointByIndex(pos);
         if(ch==_food){
             eatFood();
+            addPoint(getAPoint(),_food);
         }else if(ch==_body){
             break;
         }
         pos=moveSnakeHead(pos);
-        if(!linkQueueIsEmpty(snakeShape)){
-            printf("pos %d set body\n",pos);
-            addPoint(pos,getBody());
-        }else{
-            printf("pos %d set empty\n",pos);
-            addPoint(pos,_filler);
-        }
-        pPos=(int*)malloc(sizeof(int));
-        *pPos=pos;
-        linkQueueEnqueue(snakeShape,pPos);
+        if(pos!=getTail()){
+            addPoint(pos,_body);
+            pPos=(int*)malloc(sizeof(int));
+            *pPos=pos;
+            linkQueueEnqueue(snakeShape,pPos);
             pPos=(int*)linkQueueFront(snakeShape);
             pos=moveSnakeTail(*pPos);
             if(pos!=-1){
-                linkQueueDequeue(snakeShape);
-                addPoint(*pPos,_body);
                 addPoint(pos,_filler);
-                printf("The new tail:%d\n",*pPos);
-                printf("The old tail:%d\n",pos);
+                linkQueueDequeue(snakeShape);
                 free(pPos);
-            }else{
-                pos=moveSnakeTail(-1);
-                //addPoint(*pPos,getBody());
-                //addPoint(pos,getBody());
             }
+        }else{
+            addPoint(pos,_filler);
+            moveSnakeTail(getHead());
+        }
     }
     linkQueueFree(&snakeShape);
     return 0;
