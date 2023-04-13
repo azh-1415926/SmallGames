@@ -37,7 +37,7 @@ int main(){
         initalizeChessBoard(filler);
         initalizeGame('O','X');
         printf("  %s\n",boardTitle);
-        printChessBoard();
+        showChessBoard();
         boardTitle="Game Running!";
         while(1){
             do{
@@ -49,7 +49,7 @@ int main(){
             addChequer(pos,chequer);
             clearScreen();
             printf("  %s\n",boardTitle);
-            printChessBoard();
+            showChessBoard();
             printf("lastChequer is set on postion %d.\n",pos+1);
             switch(isWin(pos)){
                 case -1:
@@ -58,14 +58,14 @@ int main(){
                     boardTitle="Game Over!";
                     clearScreen();
                     printf("  %s\n",boardTitle);
-                    printChessBoard();
+                    showChessBoard();
                     printf("%s\n",getWinner(chequer));
                     return 0;
                 case 0:
                     boardTitle="Game Over!";
                     clearScreen();
                     printf("  %s\n",boardTitle);
-                    printChessBoard();
+                    showChessBoard();
                     printf("%s\n",getWinner(filler));
                     return 0;
             }

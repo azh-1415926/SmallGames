@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 void initalizeChessBoard(char filler);
-void printChessBoard();
+void showChessBoard();
 char getChequer(int pos);
 void addChequer(int pos,char chequer);
 bool isInvaild(int pos);
