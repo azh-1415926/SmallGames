@@ -6,7 +6,7 @@ static char chequerFiller='-';
 void initalizeChessBoard(char filler){
     memset(board,filler,sizeof(board));
 }
-void printChessBoard(){
+void showChessBoard(){
     printf("*---*---*---*\n");
     printf("| %c | %c | %c |\n",board[0],board[1],board[2]);
     printf("*---*---*---*\n");
