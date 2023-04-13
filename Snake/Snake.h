@@ -10,6 +10,7 @@ struct snake {
 void initalizeSnake(int pos);
 int getHead();
 int getTail();
+int getLength();
 void eatFood();
 int moveSnakeHead(int pos);
 int moveSnakeTail(int pos);

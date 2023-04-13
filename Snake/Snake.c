@@ -11,6 +11,9 @@ int getHead(){
 int getTail(){
     return snakeBody.tail;
 }
+int getLength(){
+    return snakeBody.length;
+}
 void eatFood(){
     snakeBody.length++;
 }

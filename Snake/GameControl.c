@@ -69,7 +69,6 @@ int getUserControl(){
     #elif __linux__
 
     #endif
-    int moveAction=0;
     switch (ch)
     {
     case 56:
