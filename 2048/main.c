@@ -22,6 +22,10 @@ int main(){
     {
         case 1:
             showGameScreen();
+            addRandomPoint();
+            showGameScreen();
+            moveLeft();
+            showGameScreen();
         case 2:
             break;
         default:

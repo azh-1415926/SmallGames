@@ -3,7 +3,11 @@
 #include <stdio.h>
 #include <stdbool.h>
 void showGameScreen();
-void addPoint(int pos,int data);
+void addRandomPoint();
+void moveFront();
+void moveLeft();
+void moveRight();
+void moveBehind();
 bool isInvaild(int pos);
 int isWin(int pos);
 #endif /* _GAME_MAP_H_ */

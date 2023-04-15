@@ -1,18 +1,114 @@
 #include "GameScreen.h"
-static int board[16]={0};
+static int board[4][4]={0};
 void showGameScreen(){
     printf("*----*----*----*----*\n");
-    printf("|%4d|%4d|%4d|%4d|\n",board[0],board[1],board[2],board[3]);
+    printf("|%4d|%4d|%4d|%4d|\n",board[0][0],board[0][1],board[0][2],board[0][3]);
     printf("*----*----*----*----*\n");
-    printf("|%4d|%4d|%4d|%4d|\n",board[4],board[5],board[6],board[7]);
+    printf("|%4d|%4d|%4d|%4d|\n",board[1][0],board[0][1],board[1][2],board[1][3]);
     printf("*----*----*----*----*\n");
-    printf("|%4d|%4d|%4d|%4d|\n",board[8],board[9],board[10],board[11]);
+    printf("|%4d|%4d|%4d|%4d|\n",board[2][0],board[2][1],board[2][2],board[2][3]);
     printf("*----*----*----*----*\n");
-    printf("|%4d|%4d|%4d|%4d|\n",board[12],board[13],board[14],board[15]);
+    printf("|%4d|%4d|%4d|%4d|\n",board[3][0],board[3][1],board[3][2],board[3][3]);
     printf("*----*----*----*----*\n");
 }
-void addPoint(int pos,int data){
-    board[pos]=data;
+void addRandomPoint(){
+    board[0][0]=2;
+    board[1][0]=1;
+    board[2][0]=1;
+    board[3][0]=0;
+    board[0][1]=2;
+    board[1][1]=2;
+    board[2][1]=1;
+    board[3][1]=1;
+    board[0][2]=2;
+    board[1][2]=2;
+    board[2][2]=1;
+    board[3][2]=2;
+    // board[0][0]=2;
+    // board[0][1]=1;
+    // board[0][2]=1;
+    // board[0][3]=0;
+    // board[1][0]=1;
+    // board[1][1]=1;
+    // board[1][2]=1;
+    // board[1][3]=2;
+    // board[2][0]=2;
+    // board[2][1]=1;
+    // board[2][2]=1;
+    // board[2][3]=2;
+}
+void moveFront(){
+    for(int i=0;i<4;i++){
+        //curr columns
+        for(int j=1;j<4;j++){
+            // i row j column
+            //compare to the front of k columns
+            for(int k=1;k<4&&j-k>=0;){
+                if(board[j-k][i]!=0&&board[j-k+1][i]==board[j-k][i]){
+                    board[j-k][i]*=2;
+                    board[j-k+1][i]=0;
+                    j=j-k-1;
+                    break;
+                }else if(board[j-k][i]==0){
+                    k++;
+                }else{
+                    break;
+                }
+            }
+        }
+    }
+    for(int i=0;i<4;i++){
+        for(int j=0;j<4;j++){
+            if(board[j][i]==0){
+                for(int k=j+1;k<4;k++){
+                    if(board[k][i]!=0){
+                        board[j][i]=board[k][i];
+                        board[k][i]=0;
+                    }
+                }
+            }
+        }
+    }
+}
+void moveLeft(){
+    //every rows
+    for(int i=0;i<4;i++){
+        //curr columns
+        for(int j=1;j<4;j++){
+            // i row j column
+            //compare to the front of k columns
+            for(int k=1;k<4&&j-k>=0;){
+                if(board[i][j-k]!=0&&board[i][j-k+1]==board[i][j-k]){
+                    board[i][j-k]*=2;
+                    board[i][j-k+1]=0;
+                    j=j-k-1;
+                    break;
+                }else if(board[i][j-k]==0){
+                    k++;
+                }else{
+                    break;
+                }
+            }
+        }
+    }
+    for(int i=0;i<4;i++){
+        for(int j=0;j<4;j++){
+            if(board[i][j]==0){
+                for(int k=j+1;k<4;k++){
+                    if(board[i][k]!=0){
+                        board[i][j]=board[i][k];
+                        board[i][k]=0;
+                    }
+                }
+            }
+        }
+    }
+}
+void moveRight(){
+
+}
+void moveBehind(){
+
 }
 bool isInvaild(int pos){
     if(pos<0||pos>15)
