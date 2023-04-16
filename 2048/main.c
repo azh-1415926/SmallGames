@@ -24,7 +24,10 @@ int main(){
             showGameScreen();
             addRandomPoint();
             showGameScreen();
-            moveLeft();
+            //moveFront();
+            //moveLeft();
+            //moveRight();
+            moveBehind();
             showGameScreen();
         case 2:
             break;

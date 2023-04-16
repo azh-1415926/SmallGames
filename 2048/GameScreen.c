@@ -37,50 +37,16 @@ void addRandomPoint(){
     // board[2][2]=1;
     // board[2][3]=2;
 }
-void moveFront(){
+static void moveHorizon(){
     for(int i=0;i<4;i++){
         //curr columns
         for(int j=1;j<4;j++){
             // i row j column
             //compare to the front of k columns
             for(int k=1;k<4&&j-k>=0;){
-                if(board[j-k][i]!=0&&board[j-k+1][i]==board[j-k][i]){
-                    board[j-k][i]*=2;
-                    board[j-k+1][i]=0;
-                    j=j-k-1;
-                    break;
-                }else if(board[j-k][i]==0){
-                    k++;
-                }else{
-                    break;
-                }
-            }
-        }
-    }
-    for(int i=0;i<4;i++){
-        for(int j=0;j<4;j++){
-            if(board[j][i]==0){
-                for(int k=j+1;k<4;k++){
-                    if(board[k][i]!=0){
-                        board[j][i]=board[k][i];
-                        board[k][i]=0;
-                    }
-                }
-            }
-        }
-    }
-}
-void moveLeft(){
-    //every rows
-    for(int i=0;i<4;i++){
-        //curr columns
-        for(int j=1;j<4;j++){
-            // i row j column
-            //compare to the front of k columns
-            for(int k=1;k<4&&j-k>=0;){
-                if(board[i][j-k]!=0&&board[i][j-k+1]==board[i][j-k]){
+                if(board[i][j-k]!=0&&board[i][j]==board[i][j-k]){
                     board[i][j-k]*=2;
-                    board[i][j-k+1]=0;
+                    board[i][j]=0;
                     j=j-k-1;
                     break;
                 }else if(board[i][j-k]==0){
@@ -91,6 +57,43 @@ void moveLeft(){
             }
         }
     }
+}
+static void moveVertical(){
+    for(int i=0;i<4;i++){
+        for(int j=1;j<4;j++){
+            for(int k=1;k<4&&j-k>=0;){
+                if(board[j-k][i]!=0&&board[j][i]==board[j-k][i]){
+                    board[j-k][i]*=2;
+                    board[j][i]=0;
+                    j=j-k-1;
+                    break;
+                }else if(board[j-k][i]==0){
+                    k++;
+                }else{
+                    break;
+                }
+            }
+        }
+    }
+}
+void moveFront(){
+    moveVertical();
+    for(int i=0;i<4;i++){
+        for(int j=0;j<4;j++){
+            if(board[j][i]==0){
+                for(int k=j+1;k<4;k++){
+                    if(board[k][i]!=0){
+                        board[j][i]=board[k][i];
+                        board[k][i]=0;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+}
+void moveLeft(){
+    moveHorizon();
     for(int i=0;i<4;i++){
         for(int j=0;j<4;j++){
             if(board[i][j]==0){
@@ -98,6 +101,7 @@ void moveLeft(){
                     if(board[i][k]!=0){
                         board[i][j]=board[i][k];
                         board[i][k]=0;
+                        break;
                     }
                 }
             }
@@ -105,10 +109,36 @@ void moveLeft(){
     }
 }
 void moveRight(){
-
+    moveHorizon();
+    for(int i=0;i<4;i++){
+        for(int j=3;j>=0;j--){
+            if(board[i][j]==0){
+                for(int k=j-1;k>=0;k--){
+                    if(board[i][k]!=0){
+                        board[i][j]=board[i][k];
+                        board[i][k]=0;
+                        break;
+                    }
+                }
+            }
+        }
+    }
 }
 void moveBehind(){
-
+    moveVertical();
+    for(int i=0;i<4;i++){
+        for(int j=3;j>=0;j--){
+            if(board[j][i]==0){
+                for(int k=j-1;k>=0;k--){
+                    if(board[k][i]!=0){
+                        board[j][i]=board[k][i];
+                        board[k][i]=0;
+                        break;
+                    }
+                }
+            }
+        }
+    }
 }
 bool isInvaild(int pos){
     if(pos<0||pos>15)
