@@ -11,6 +11,7 @@
 #define MOVE_LEFT 1
 #define MOVE_BEHIND 2
 #define MOVE_RIGHT 3
-void moveAction();
+void initalGame();
+int getRandomNumber(int remainder);
 int getUserControl();
 #endif /* _GAMECONTROL_H_ */

@@ -1,12 +1,22 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "GameScreen.h"
+#include "GameControl.h"
 static void clearScreen(){
     #if _WIN32
     system("cls");
     #elif __linux__
     system("clear");
     #endif
+}
+static void addRandomPoint(int count){
+    int pos=-1;
+    for(int i=0;i<count;i++){
+        while(isInvaild(pos)){
+            pos=getRandomNumber(16);
+        }
+        addPoint(pos,(getRandomNumber(1)+1)*2);
+    }
 }
 int main(){
     printf("**************\n");
@@ -21,14 +31,38 @@ int main(){
     switch (option)
     {
         case 1:
+        initalGame();
+        //addRandomPoint(2);
+        addPoint(0,2);
+        addPoint(1,2);
+        addPoint(2,1);
+        addPoint(3,1);
+        while (!isWin())
+        {
             showGameScreen();
-            addRandomPoint();
-            showGameScreen();
-            //moveFront();
-            //moveLeft();
-            //moveRight();
-            moveBehind();
-            showGameScreen();
+            switch (getUserControl())
+            {
+            case MOVE_FRONT:
+                moveFront();
+                //addRandomPoint(2);
+                break;
+            case MOVE_LEFT:
+                moveLeft();
+                //addRandomPoint(2);
+                break;
+            case MOVE_RIGHT:
+                moveRight();
+                //addRandomPoint(2);
+                break;
+            case MOVE_BEHIND:
+                moveBehind();
+                //addRandomPoint(2);
+                break;
+            default:
+                break;
+            }
+            //showGameScreen();
+        }
         case 2:
             break;
         default:

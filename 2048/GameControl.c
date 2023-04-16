@@ -1,6 +1,11 @@
 #include "GameControl.h"
-void moveAction(){
-    
+#include <stdlib.h>
+#include <time.h>
+void initalGame(){
+    srand(time(NULL));
+}
+int getRandomNumber(int remainder){
+    return rand()%remainder;
 }
 int getUserControl(){
     char ch=0;

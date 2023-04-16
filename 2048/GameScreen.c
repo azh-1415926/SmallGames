@@ -1,41 +1,20 @@
 #include "GameScreen.h"
 static int board[4][4]={0};
+static int maxNumber=0;
 void showGameScreen(){
     printf("*----*----*----*----*\n");
     printf("|%4d|%4d|%4d|%4d|\n",board[0][0],board[0][1],board[0][2],board[0][3]);
     printf("*----*----*----*----*\n");
-    printf("|%4d|%4d|%4d|%4d|\n",board[1][0],board[0][1],board[1][2],board[1][3]);
+    printf("|%4d|%4d|%4d|%4d|\n",board[1][0],board[1][1],board[1][2],board[1][3]);
     printf("*----*----*----*----*\n");
     printf("|%4d|%4d|%4d|%4d|\n",board[2][0],board[2][1],board[2][2],board[2][3]);
     printf("*----*----*----*----*\n");
     printf("|%4d|%4d|%4d|%4d|\n",board[3][0],board[3][1],board[3][2],board[3][3]);
     printf("*----*----*----*----*\n");
 }
-void addRandomPoint(){
-    board[0][0]=2;
-    board[1][0]=1;
-    board[2][0]=1;
-    board[3][0]=0;
-    board[0][1]=2;
-    board[1][1]=2;
-    board[2][1]=1;
-    board[3][1]=1;
-    board[0][2]=2;
-    board[1][2]=2;
-    board[2][2]=1;
-    board[3][2]=2;
-    // board[0][0]=2;
-    // board[0][1]=1;
-    // board[0][2]=1;
-    // board[0][3]=0;
-    // board[1][0]=1;
-    // board[1][1]=1;
-    // board[1][2]=1;
-    // board[1][3]=2;
-    // board[2][0]=2;
-    // board[2][1]=1;
-    // board[2][2]=1;
-    // board[2][3]=2;
+void addPoint(int pos,int number){
+    board[pos/4][pos%4]=number;
+    maxNumber=maxNumber<number?number:maxNumber;
 }
 static void moveHorizon(){
     for(int i=0;i<4;i++){
@@ -47,6 +26,7 @@ static void moveHorizon(){
                 if(board[i][j-k]!=0&&board[i][j]==board[i][j-k]){
                     board[i][j-k]*=2;
                     board[i][j]=0;
+                    maxNumber=maxNumber<board[i][j-k]?board[i][j-k]:maxNumber;
                     j=j-k-1;
                     break;
                 }else if(board[i][j-k]==0){
@@ -65,6 +45,7 @@ static void moveVertical(){
                 if(board[j-k][i]!=0&&board[j][i]==board[j-k][i]){
                     board[j-k][i]*=2;
                     board[j][i]=0;
+                    maxNumber=maxNumber<board[j-k][i]?board[j-k][i]:maxNumber;
                     j=j-k-1;
                     break;
                 }else if(board[j-k][i]==0){
@@ -145,6 +126,6 @@ bool isInvaild(int pos){
         return true;
     return board[pos]!=0;
 }
-int isWin(int pos){
-    return board[pos]==2048;
+bool isWin(){
+    return maxNumber==2048;
 }
