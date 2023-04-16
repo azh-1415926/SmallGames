@@ -12,6 +12,7 @@ static void clearScreen(){
 static void addRandomPoint(int count){
     int pos=-1;
     for(int i=0;i<count;i++){
+        pos=-1;
         while(isInvaild(pos)){
             pos=getRandomNumber(16);
         }
@@ -32,36 +33,40 @@ int main(){
     {
         case 1:
         initalGame();
-        //addRandomPoint(2);
-        addPoint(0,2);
-        addPoint(1,2);
-        addPoint(2,1);
-        addPoint(3,1);
+        addRandomPoint(2);
         while (!isWin())
         {
+            clearScreen();
             showGameScreen();
             switch (getUserControl())
             {
             case MOVE_FRONT:
                 moveFront();
-                //addRandomPoint(2);
+                if(!isFull()){
+                    addRandomPoint(2);
+                }
                 break;
             case MOVE_LEFT:
                 moveLeft();
-                //addRandomPoint(2);
+                if(!isFull()){
+                    addRandomPoint(2);
+                }
                 break;
             case MOVE_RIGHT:
                 moveRight();
-                //addRandomPoint(2);
+                if(!isFull()){
+                    addRandomPoint(2);
+                }
                 break;
             case MOVE_BEHIND:
                 moveBehind();
-                //addRandomPoint(2);
+                if(!isFull()){
+                    addRandomPoint(2);
+                }
                 break;
             default:
                 break;
             }
-            //showGameScreen();
         }
         case 2:
             break;

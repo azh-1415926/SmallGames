@@ -9,5 +9,6 @@ void moveLeft();
 void moveRight();
 void moveBehind();
 bool isInvaild(int pos);
+bool isFull();
 bool isWin();
 #endif /* _GAME_MAP_H_ */

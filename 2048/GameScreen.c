@@ -1,6 +1,7 @@
 #include "GameScreen.h"
 static int board[4][4]={0};
 static int maxNumber=0;
+static int zeroCount=16;
 void showGameScreen(){
     printf("*----*----*----*----*\n");
     printf("|%4d|%4d|%4d|%4d|\n",board[0][0],board[0][1],board[0][2],board[0][3]);
@@ -15,6 +16,7 @@ void showGameScreen(){
 void addPoint(int pos,int number){
     board[pos/4][pos%4]=number;
     maxNumber=maxNumber<number?number:maxNumber;
+    zeroCount--;
 }
 static void moveHorizon(){
     for(int i=0;i<4;i++){
@@ -72,6 +74,16 @@ void moveFront(){
             }
         }
     }
+    int zero=0;
+    for(int i=0;i<4;i++){
+        for(int j=0;j<4;j++){
+            if(board[i][j]==0){
+                zero+=4-i;
+                break;
+            }
+        }
+    }
+    zeroCount=zero;
 }
 void moveLeft(){
     moveHorizon();
@@ -88,6 +100,16 @@ void moveLeft(){
             }
         }
     }
+    int zero=0;
+    for(int i=0;i<4;i++){
+        for(int j=0;j<4;j++){
+            if(board[i][j]==0){
+                zero+=4-j;
+                break;
+            }
+        }
+    }
+    zeroCount=zero;
 }
 void moveRight(){
     moveHorizon();
@@ -104,6 +126,16 @@ void moveRight(){
             }
         }
     }
+    int zero=0;
+    for(int i=0;i<4;i++){
+        for(int j=0;j<4;j++){
+            if(board[i][j]==0){
+                zero+=j;
+                break;
+            }
+        }
+    }
+    zeroCount=zero;
 }
 void moveBehind(){
     moveVertical();
@@ -120,11 +152,24 @@ void moveBehind(){
             }
         }
     }
+    int zero=0;
+    for(int i=0;i<4;i++){
+        for(int j=0;j<4;j++){
+            if(board[i][j]==0){
+                zero+=i;
+                break;
+            }
+        }
+    }
+    zeroCount=zero;
 }
 bool isInvaild(int pos){
     if(pos<0||pos>15)
         return true;
-    return board[pos]!=0;
+    return board[pos/4][pos%4]!=0;
+}
+bool isFull(){
+    return zeroCount==0;
 }
 bool isWin(){
     return maxNumber==2048;
