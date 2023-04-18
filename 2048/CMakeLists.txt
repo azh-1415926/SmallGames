@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0.0)
+cmake_minimum_required(VERSION 2.8.0)
 set(PROJECT_NAME snake)
 set(SRC_LIST GameScreen.c GameControl.c main.c)
 project(${PROJECT_NAME})
