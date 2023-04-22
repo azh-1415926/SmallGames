@@ -5,7 +5,7 @@
 
 #include <QObject>
 #include <QPoint>
-
+#include <QTime>
 
 class GameControl : public QObject
 {
@@ -18,17 +18,22 @@ signals:
     void moving(int direction);
     void moveHead(int pos);
     void moveTail(int pos);
+    void costTime(double time);
+    void restartGame();
+    void exitGame();
 public slots:
-    void startGame();
+    void initalControl();
     void moveSnake(QPoint const& point);
     void updateHead(QPoint const& head);
     void updateTail(QPoint const& tail);
-    void exitGame();
+    void closeGame();
 private:
     int timerId;
     int lastDirection;
     int head;
     int tail;
+    int flag;
+    double startTime;
 };
 
 #endif // GAMECONTROL_H

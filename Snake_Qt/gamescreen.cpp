@@ -8,6 +8,7 @@ GameScreen::GameScreen(QWidget* parent)
     , view(new QGraphicsView(scene,this))
     , group(new QGraphicsItemGroup)
 {
+    setFocusPolicy(Qt::StrongFocus);
     inital();
     for(int i=0;i<81;i++){
         snakeShape<<nullptr;
@@ -23,7 +24,10 @@ void GameScreen::updatePoint(int pos)
         snakeShape[pos]->setBrush(QBrush(Qt::yellow));
         group->addToGroup(snakeShape[pos]);
     }else if(snakeShape[pos]==food){
-        emit findFood();
+        food->setBrush(Qt::yellow);
+        food=nullptr;
+        addFood();
+        emit findFood(pos);
     }else{
         emit closeGame();
     }
@@ -40,7 +44,7 @@ void GameScreen::clearPoint(int pos)
 void GameScreen::addFood()
 {
     int pos=-1;
-    while(pos==-1||snakeShape[pos]==nullptr){
+    while(pos==-1||snakeShape[pos]!=nullptr){
         pos=rand()%81;
     }
     snakeShape[pos]=new QGraphicsRectItem(25+pos%9*50,25+pos/9*50,50,50);
@@ -51,13 +55,39 @@ void GameScreen::addFood()
 
 void GameScreen::clearScreen()
 {
-    qDeleteAll(snakeShape);
+    for(int i=0;i<81;i++){
+        if(snakeShape[i]!=nullptr){
+            delete snakeShape[i];
+            snakeShape[i]=nullptr;
+        }
+    }
 }
 
 void GameScreen::mousePressEvent(QMouseEvent* event)
 {
     qDebug()<<"mouse press on the "<<event->position().x()<<" "<<event->position().y();
     emit clickScreen(QPoint(event->position().x(),event->position().y()));
+}
+
+void GameScreen::keyPressEvent(QKeyEvent *event)
+{
+    qDebug()<<event->key();
+    switch (event->key()) {
+    case Qt::Key_Up:
+        qDebug()<<"press up";
+        break;
+    case Qt::Key_Down:
+        qDebug()<<"press down";
+        break;
+    case Qt::Key_Left:
+        qDebug()<<"press left";
+        break;
+    case Qt::Key_Right:
+        qDebug()<<"press right";
+        break;
+    default:
+        break;
+    }
 }
 
 void GameScreen::inital()

@@ -17,7 +17,11 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 signals:
+    void startGame();
     void clearRecord();
+public slots:
+    void setTime(double time);
+    void setLength(int length);
 private:
     QMenuBar* menu;
     QMenu* startMenu;
@@ -26,6 +30,7 @@ private:
     GameScreen* screen;
     SnakeAction* snake;
     GameControl* control;
+    int i;
     void initalMenu();
     void initalRecord();
     void initalGame();

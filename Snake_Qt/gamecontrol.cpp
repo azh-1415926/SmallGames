@@ -1,10 +1,12 @@
 
 #include "gamecontrol.h"
 #include <QTimer>
+#include <QMessageBox>
 #include <QDebug>
 
 GameControl::GameControl(QObject* parent)
     : QObject(parent)
+    , startTime(0)
 {
     lastDirection=0;
     head=tail=40;
@@ -13,16 +15,23 @@ GameControl::GameControl(QObject* parent)
 void GameControl::timerEvent(QTimerEvent *event)
 {
     emit moving(lastDirection);
+    flag=0;
 }
 
-void GameControl::startGame(){
+void GameControl::initalControl(){
     lastDirection=0;
     head=tail=40;
     timerId=startTimer(1000);
+    flag=0;
+    startTime=clock();
 }
 
 void GameControl::moveSnake(const QPoint &point)
 {
+    if(this->flag){
+        return;
+    }
+    this->flag=1;
     int flag=(lastDirection==0||lastDirection==2)?0:1;
     int row=head/9;
     int column=head%9;
@@ -46,12 +55,13 @@ void GameControl::updateHead(const QPoint &head)
     qDebug()<<"try to mouse head to "<<head;
     if(head.x()<25||head.x()>425||head.y()<25||head.y()>425){
         qDebug()<<"head error";
-        emit exitGame();
+        closeGame();
         return;
     }
     int pos=(head.x()-25)/50+(head.y()-25)/50*9;
     qDebug()<<"head pos:"<<pos;
     emit moveHead(pos);
+    this->head=pos;
 }
 
 void GameControl::updateTail(const QPoint &tail)
@@ -59,15 +69,22 @@ void GameControl::updateTail(const QPoint &tail)
     qDebug()<<"try to mouse tail to "<<tail;
     if(tail.x()<25||tail.x()>425||tail.y()<25||tail.y()>425){
         qDebug()<<"tail error";
-        emit exitGame();
+        //emit exitGame();
         return;
     }
     emit moveTail(this->tail);
     this->tail=(tail.x()-25)/50+(tail.y()-25)/50*9;
 }
 
-void GameControl::exitGame()
+void GameControl::closeGame()
 {
     killTimer(timerId);
+    emit costTime((clock()-startTime)/1000.0);
+    QMessageBox::Button result=QMessageBox::question(nullptr,"Game Over!","Do you want play again?",QMessageBox::Ok|QMessageBox::No,QMessageBox::No);
+    if(result==QMessageBox::Ok){
+        emit restartGame();
+    }else{
+        emit exitGame();
+    }
 }
 

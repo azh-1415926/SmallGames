@@ -17,7 +17,6 @@ void SnakeAction::initalSnake()
 
 void SnakeAction::moveTo(int direction)
 {
-again:
     switch(direction){
     //front
     case 0:
@@ -49,14 +48,20 @@ again:
     }
 }
 
-void SnakeAction::eatFood()
+void SnakeAction::eatFood(int pos)
 {
+    snakeShape.enqueue(QPoint(25+pos%9*50,25+pos/9*50));
     length++;
 }
 
 void SnakeAction::clearSnake()
 {
     snakeShape.clear();
+}
+
+void SnakeAction::getLength()
+{
+    emit sendLength(length);
 }
 
 void SnakeAction::moveFront()
