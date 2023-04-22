@@ -57,7 +57,7 @@ int movePoint(int pos,int flag){
     return pos;
 }
 int getUserControl(){
-    char ch=0;
+    unsigned char ch=0;
     int action;
     #if _WIN32
     if(!kbhit()){
@@ -65,6 +65,9 @@ int getUserControl(){
     }
     if(kbhit()){
         ch=getch();
+        if(ch==224){
+            ch=getch();
+        }
     }
     #elif __linux__
 
@@ -72,21 +75,25 @@ int getUserControl(){
     switch (ch)
     {
     case 56:
+    case 72:
     case 119:
         /* front */
         action=MOVE_FRONT;
         break;
     case 52:
+    case 75:
     case 97:
         /* left */
         action=MOVE_LEFT;
         break;
     case 50:
+    case 80:
     case 115:
         /* behind */
         action=MOVE_BEHIND;
         break;    
     case 54:
+    case 77:
     case 100:
         /* right */
         action=MOVE_RIGHT;
