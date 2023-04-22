@@ -1,38 +1,26 @@
+
 #include "mainwindow.h"
+#include <QMenuBar>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , menu(menuBar())
-    , record(new QTableWidget(this))
+    , recordTable(new QTableWidget(this))
     , screen(new GameScreen)
     , snake(new SnakeAction)
+    , control(new GameControl)
 {
-    record->setGeometry(25,50,450,400);
-    record->setColumnCount(3);
-    record->setRowCount(5);
-    record->setHorizontalHeaderLabels(QStringList()<<tr("Player")<<tr("Cost Time")<<tr("Score"));
-    connect(screen,&GameScreen::clickScreen,snake,&SnakeAction::moveAction);
-    connect(snake,&SnakeAction::moveHead,screen,&GameScreen::updateHead);
-    connect(snake,&SnakeAction::moveTail,screen,&GameScreen::updateTail);
-    connect(screen,&GameScreen::closeGame,this,[=](){
-        snake->clearSnake();
-        screen->close();
-        killTimer(timerId);
-    });
-    connect(snake,&SnakeAction::removeBody,screen,&GameScreen::removePoint);
     initalMenu();
+    initalRecord();
+    initalGame();
 }
 
 MainWindow::~MainWindow()
 {
 }
 
-void MainWindow::timerEvent(QTimerEvent *event)
+void MainWindow::initalMenu()
 {
-    snake->moveTo(-1);
-}
-
-void MainWindow::initalMenu(){
     startMenu=menu->addMenu(tr("start"));
     helpMenu=menu->addMenu(tr("help"));
     QAction* startAction=new QAction(tr("start game"));
@@ -44,15 +32,45 @@ void MainWindow::initalMenu(){
     startMenu->addAction(exitAction);
     helpMenu->addAction(aboutAction);
     connect(startAction,&QAction::triggered,this,[=](){
+        control->startGame();
+        screen->updatePoint(40);
+        snake->initalSnake();
         screen->show();
-        timerId=startTimer(1000);
+        screen->addFood();
     });
     connect(clearAction,&QAction::triggered,this,[=](){
-        record->clear();
-        record->setHorizontalHeaderLabels(QStringList()<<tr("Player")<<tr("Cost Time")<<tr("Score"));
+        recordTable->clear();
+        recordTable->setHorizontalHeaderLabels(QStringList()<<tr("Player")<<tr("Cost Time")<<tr("Score"));
     });
     connect(exitAction,&QAction::triggered,this,&QMainWindow::close);
     connect(aboutAction,&QAction::triggered,this,[=](){
 
     });
 }
+
+void MainWindow::initalRecord()
+{
+    recordTable->setGeometry(50,100,400,300);
+    recordTable->setColumnCount(3);
+    recordTable->setRowCount(5);
+    recordTable->setHorizontalHeaderLabels(QStringList()<<tr("Player")<<tr("Cost Time")<<tr("Score"));
+}
+
+void MainWindow::initalGame()
+{
+    connect(screen,&GameScreen::clickScreen,control,&GameControl::moveSnake);
+    connect(screen,&GameScreen::findFood,snake,&SnakeAction::eatFood);
+    connect(screen,&GameScreen::closeGame,this,[=](){
+        snake->clearSnake();
+        screen->clearScreen();
+        screen->close();
+    });
+    connect(control,&GameControl::moving,snake,&SnakeAction::moveTo);
+    connect(control,&GameControl::moveHead,screen,&GameScreen::updatePoint);
+    connect(control,&GameControl::moveTail,screen,&GameScreen::clearPoint);
+    connect(snake,&SnakeAction::moveHead,control,&GameControl::updateHead);
+    connect(snake,&SnakeAction::moveTail,control,&GameControl::updateTail);
+    connect(snake,&SnakeAction::eatFood,screen,&GameScreen::addFood);
+}
+
+

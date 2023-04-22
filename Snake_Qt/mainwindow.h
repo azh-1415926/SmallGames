@@ -1,15 +1,15 @@
+
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QMenu>
-#include <QMenuBar>
 #include <QTableWidget>
-#include <QTimer>
-#include "gamescreen.h"
 #include "snakeaction.h"
+#include "gamescreen.h"
+#include "gamecontrol.h"
 
 class MainWindow : public QMainWindow
+
 {
     Q_OBJECT
 
@@ -18,16 +18,17 @@ public:
     ~MainWindow();
 signals:
     void clearRecord();
-protected:
-    void timerEvent(QTimerEvent* event) override;
 private:
     QMenuBar* menu;
     QMenu* startMenu;
     QMenu* helpMenu;
-    QTableWidget* record;
+    QTableWidget* recordTable;
     GameScreen* screen;
     SnakeAction* snake;
-    int timerId;
+    GameControl* control;
     void initalMenu();
+    void initalRecord();
+    void initalGame();
 };
+
 #endif // MAINWINDOW_H

@@ -7,8 +7,6 @@
 #include <QGraphicsScene>
 #include <QGraphicsView>
 #include <QGraphicsItem>
-#include <QQueue>
-
 
 class GameScreen : public QWidget
 {
@@ -17,21 +15,22 @@ public:
     GameScreen(QWidget* parent=nullptr);
 signals:
     void clickScreen(QPoint const& point);
+    void findFood();
     void closeGame();
 public slots:
-    void updateHead(QPoint const& head);
-    void updateTail(QPoint const& tail);
-    void removePoint(QPoint const& point);
+    void updatePoint(int pos);
+    void clearPoint(int pos);
+    void addFood();
+    void clearScreen();
 protected:
     void mousePressEvent(QMouseEvent* event) override;
 private:
     QGraphicsScene* scene;
     QGraphicsView* view;
     QGraphicsItemGroup* group;
-    QGraphicsRectItem* head;
-    QGraphicsRectItem* tail;
+    QGraphicsRectItem* food;
     QList<QGraphicsRectItem*> snakeShape;
-    void initalGame();
+    void inital();
 };
 
 #endif // GAMESCREEN_H

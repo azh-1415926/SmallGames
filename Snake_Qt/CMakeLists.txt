@@ -16,10 +16,12 @@ set(PROJECT_SOURCES
         main.cpp
         mainwindow.cpp
         mainwindow.h
-        gamescreen.cpp
-        gamescreen.h
         snakeaction.cpp
         snakeaction.h
+        gamescreen.cpp
+        gamescreen.h
+        gamecontrol.cpp
+        gamecontrol.h
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
