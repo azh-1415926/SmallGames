@@ -18,38 +18,57 @@ void addPoint(int pos,int number){
     maxNumber=maxNumber<number?number:maxNumber;
     zeroCount--;
 }
-static void moveHorizon(){
-    for(int i=0;i<4;i++){
-        //curr columns
-        for(int j=1;j<4;j++){
-            // i row j column
-            //compare to the front of k columns
-            for(int k=1;k<4&&j-k>=0;){
-                if(board[i][j-k]!=0&&board[i][j]==board[i][j-k]){
-                    board[i][j-k]*=2;
-                    board[i][j]=0;
-                    maxNumber=maxNumber<board[i][j-k]?board[i][j-k]:maxNumber;
-                    j=j-k-1;
-                    break;
-                }else if(board[i][j-k]==0){
-                    k++;
-                }else{
-                    break;
-                }
-            }
-        }
-    }
-}
-static void moveVertical(){
+// static void moveHorizon(){
+//     for(int i=0;i<4;i++){
+//         //curr columns
+//         for(int j=1;j<4;j++){
+//             // i row j column
+//             //compare to the front of k columns
+//             for(int k=1;k<4&&j-k>=0;){
+//                 if(board[i][j-k]!=0&&board[i][j]==board[i][j-k]){
+//                     board[i][j-k]*=2;
+//                     board[i][j]=0;
+//                     maxNumber=maxNumber<board[i][j-k]?board[i][j-k]:maxNumber;
+//                     j=j-k-1;
+//                     break;
+//                 }else if(board[i][j-k]==0){
+//                     k++;
+//                 }else{
+//                     break;
+//                 }
+//             }
+//         }
+//     }
+// }
+// static void moveVertical(){
+//     for(int i=0;i<4;i++){
+//         for(int j=1;j<4;j++){
+//             for(int k=1;k<4&&j-k>=0;){
+//                 if(board[j-k][i]!=0&&board[j][i]==board[j-k][i]){
+//                     board[j-k][i]*=2;
+//                     board[j][i]=0;
+//                     maxNumber=maxNumber<board[j-k][i]?board[j-k][i]:maxNumber;
+//                     j=j-k-1;
+//                     break;
+//                 }else if(board[j-k][i]==0){
+//                     k++;
+//                 }else{
+//                     break;
+//                 }
+//             }
+//         }
+//     }
+// }
+void moveFront(){
     for(int i=0;i<4;i++){
         for(int j=1;j<4;j++){
             for(int k=1;k<4&&j-k>=0;){
                 if(board[j-k][i]!=0&&board[j][i]==board[j-k][i]){
-                    board[j-k][i]*=2;
-                    board[j][i]=0;
+                    board[j-k][i]=0;
+                    board[j][i]*=2;
                     maxNumber=maxNumber<board[j-k][i]?board[j-k][i]:maxNumber;
-                    j=j-k-1;
-                    break;
+                    k++;
+                    //break;
                 }else if(board[j-k][i]==0){
                     k++;
                 }else{
@@ -58,9 +77,6 @@ static void moveVertical(){
             }
         }
     }
-}
-void moveFront(){
-    moveVertical();
     for(int i=0;i<4;i++){
         for(int j=0;j<4;j++){
             if(board[j][i]==0){
@@ -86,7 +102,26 @@ void moveFront(){
     zeroCount=zero;
 }
 void moveLeft(){
-    moveHorizon();
+    for(int i=0;i<4;i++){
+        //curr columns
+        for(int j=1;j<4;j++){
+            // i row j column
+            //compare to the front of k columns
+            for(int k=1;k<4&&j-k>=0;){
+                if(board[i][j-k]!=0&&board[i][j]==board[i][j-k]){
+                    board[i][j-k]=0;
+                    board[i][j]*=2;
+                    maxNumber=maxNumber<board[i][j-k]?board[i][j-k]:maxNumber;
+                    k++;
+                    //break;
+                }else if(board[i][j-k]==0){
+                    k++;
+                }else{
+                    break;
+                }
+            }
+        }
+    }
     for(int i=0;i<4;i++){
         for(int j=0;j<4;j++){
             if(board[i][j]==0){
@@ -112,7 +147,23 @@ void moveLeft(){
     zeroCount=zero;
 }
 void moveRight(){
-    moveHorizon();
+    for(int i=0;i<4;i++){
+        for(int j=3;j>=0;j--){
+            for(int k=1;k<4&&j+k<4;){
+                if(board[i][j+k]!=0&&board[i][j]==board[i][j+k]){
+                    board[i][j+k]=0;
+                    board[i][j]*=2;
+                    maxNumber=maxNumber<board[i][j+k]?board[i][j+k]:maxNumber;
+                    k++;
+                    //break;
+                }else if(board[i][j+k]==0){
+                    k++;
+                }else{
+                    break;
+                }
+            }
+        }
+    }
     for(int i=0;i<4;i++){
         for(int j=3;j>=0;j--){
             if(board[i][j]==0){
@@ -138,7 +189,23 @@ void moveRight(){
     zeroCount=zero;
 }
 void moveBehind(){
-    moveVertical();
+    for(int i=0;i<4;i++){
+        for(int j=3;j>=0;j--){
+            for(int k=1;k<4&&j+k<4;){
+                if(board[j+k][i]!=0&&board[j][i]==board[j+k][i]){
+                    board[j+k][i]=0;
+                    board[j][i]*=2;
+                    maxNumber=maxNumber<board[j+k][i]?board[j+k][i]:maxNumber;
+                    k++;
+                    //break;
+                }else if(board[j+k][i]==0){
+                    k++;
+                }else{
+                    break;
+                }
+            }
+        }
+    }
     for(int i=0;i<4;i++){
         for(int j=3;j>=0;j--){
             if(board[j][i]==0){

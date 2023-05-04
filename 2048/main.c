@@ -1,13 +1,20 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include "GameScreen.h"
 #include "GameControl.h"
+static time_t startTime=0;
 static void clearScreen(){
     #if _WIN32
     system("cls");
     #elif __linux__
     system("clear");
     #endif
+}
+static void showTime(){
+    time_t endTime=time(NULL);
+    time_t costTime=endTime-startTime;
+    printf("Time %ld%ld:%ld%ld  ",costTime/(60*10),costTime/60%10,(costTime%60-costTime%10)/10,costTime%10);
 }
 static void addRandomPoint(int count){
     int pos=-1;
@@ -32,11 +39,14 @@ int main(){
     switch (option)
     {
         case 1:
+        startTime=time(NULL);
         initalGame();
         addRandomPoint(2);
         while (!isWin())
         {
             clearScreen();
+            showTime();
+            printf("\n");
             showGameScreen();
             switch (getUserControl())
             {
