@@ -5,7 +5,6 @@
 void showGameScreen();
 void addPoint(int pos,int number);
 int getScore();
-int getZero();
 void moveFront();
 void moveLeft();
 void moveRight();

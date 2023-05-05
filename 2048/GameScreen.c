@@ -29,9 +29,6 @@ void addPoint(int pos,int number){
 int getScore(){
     return totalScore;
 }
-int getZero(){
-    return zeroCount;
-}
 void moveFront(){
     for(int i=0;i<4;i++){
         for(int j=1;j<4;j++){

@@ -48,7 +48,7 @@ int main(){
         do{
             clearScreen();
             showTime();
-            printf("  Score:%d  Zero:%d\n",getScore(),getZero());
+            printf("  Score:%d\n",getScore());
             showGameScreen();
             switch (getUserControl())
             {
@@ -82,7 +82,7 @@ int main(){
         }while(isWin()==0);
         clearScreen();
         showTime();
-        printf("  Score:%d  Zero:%d\n",getScore(),getZero());
+        printf("  Score:%d\n",getScore());
         showGameScreen();
         if(isWin()==-1){
             printf("Game Over,your score is %d.\n",getScore());
