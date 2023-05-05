@@ -22,6 +22,9 @@ static void addRandomPoint(int count){
         pos=-1;
         while(isInvaild(pos)){
             pos=getRandomNumber(16);
+            if(isFull()){
+                return;
+            }
         }
         addPoint(pos,(getRandomNumber(1)+1)*2);
     }
@@ -42,11 +45,10 @@ int main(){
         startTime=time(NULL);
         initalGame();
         addRandomPoint(2);
-        while (!isWin())
-        {
+        do{
             clearScreen();
             showTime();
-            printf("\n");
+            printf("  Score:%d  Zero:%d\n",getScore(),getZero());
             showGameScreen();
             switch (getUserControl())
             {
@@ -77,6 +79,15 @@ int main(){
             default:
                 break;
             }
+        }while(isWin()==0);
+        clearScreen();
+        showTime();
+        printf("  Score:%d  Zero:%d\n",getScore(),getZero());
+        showGameScreen();
+        if(isWin()==-1){
+            printf("Game Over,your score is %d.\n",getScore());
+        }else{
+            printf("You win,your score is %d.\n",getScore());
         }
         case 2:
             break;
