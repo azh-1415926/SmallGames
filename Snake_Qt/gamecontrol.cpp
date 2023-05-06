@@ -26,6 +26,36 @@ void GameControl::initalControl(){
     startTime=clock();
 }
 
+void GameControl::moveTo(int direction)
+{
+    if(this->flag){
+        return;
+    }
+    this->flag=1;
+    switch (direction) {
+    case 0:
+        if(lastDirection!=2){
+            lastDirection=0;
+        }
+        break;
+    case 1:
+        if(lastDirection!=3){
+            lastDirection=1;
+        }
+        break;
+    case 2:
+        if(lastDirection!=0){
+            lastDirection=2;
+        }
+        break;
+    case 3:
+        if(lastDirection!=1){
+            lastDirection=3;
+        }
+        break;
+    }
+}
+
 void GameControl::moveSnake(const QPoint &point)
 {
     if(this->flag){

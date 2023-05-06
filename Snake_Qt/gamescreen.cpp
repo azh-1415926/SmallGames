@@ -89,6 +89,29 @@ void GameScreen::keyPressEvent(QKeyEvent *event)
         break;
     }
 }
+void GameScreen::keyReleaseEvent(QKeyEvent* event)
+{
+    switch (event->key()) {
+    case Qt::Key_Up:
+        qDebug()<<"release up";
+        emit pressKeyboard(0);
+        break;
+    case Qt::Key_Down:
+        qDebug()<<"release down";
+        emit pressKeyboard(2);
+        break;
+    case Qt::Key_Left:
+        qDebug()<<"release left";
+        emit pressKeyboard(3);
+        break;
+    case Qt::Key_Right:
+        qDebug()<<"release right";
+        emit pressKeyboard(1);
+        break;
+    default:
+        break;
+    }
+}
 
 void GameScreen::inital()
 {

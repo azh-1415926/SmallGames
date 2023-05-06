@@ -15,6 +15,7 @@ public:
     GameScreen(QWidget* parent=nullptr);
 signals:
     void clickScreen(QPoint const& point);
+    void pressKeyboard(int direction);
     void findFood(int pos);
     void closeGame();
 public slots:
@@ -25,6 +26,7 @@ public slots:
 protected:
     void mousePressEvent(QMouseEvent* event) override;
     void keyPressEvent(QKeyEvent* event) override;
+    void keyReleaseEvent(QKeyEvent* event) override;
 private:
     QGraphicsScene* scene;
     QGraphicsView* view;
