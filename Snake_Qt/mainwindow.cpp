@@ -62,6 +62,7 @@ void MainWindow::initalMenu()
 
 void MainWindow::initalRecord()
 {
+    i=0;
     recordTable->setGeometry(50,100,400,300);
     recordTable->setColumnCount(2);
     recordTable->setRowCount(5);
