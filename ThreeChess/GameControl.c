@@ -29,7 +29,7 @@ static int getPlayerOption(){
     return option-1;
 }
 static int getComputerOption(){
-    return rand()%9+1;
+    return rand()%9;
 }
 void initalizeGame(char firstChequer,char secondChequer){
     char chequer_1[2]={0};
