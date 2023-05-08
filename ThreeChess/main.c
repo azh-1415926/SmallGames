@@ -50,7 +50,6 @@ int main(){
             clearScreen();
             printf("  %s\n",boardTitle);
             showChessBoard();
-            printLog();
             printf("lastChequer is set on postion %d.\n",pos+1);
             switch(isWin(pos)){
                 case -1:
