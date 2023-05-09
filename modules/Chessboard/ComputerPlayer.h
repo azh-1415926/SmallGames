@@ -1,0 +1,5 @@
+#ifndef _COMPUTERPLAYER_H_
+#define _COMPUTERPLAYER_H_
+
+
+#endif /* _COMPUTERPLAYER_H_ */
