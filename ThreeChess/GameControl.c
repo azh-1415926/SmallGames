@@ -65,12 +65,13 @@ static int getComputerOption(){
             }
         }
         for(int i=1;i<3&&((row+column)==2);++i){
-            if(playerOptions[(row+i)%3*3+(column+2*i)%3]==1)
+            if(playerOptions[(row+i)%3*3+(column+2*i)%3]==1){
                 option=(row+i+1)%3*3+(column+2*(i+1))%3;
                 if(i==2){
                     option=(row+i+2)%3*3+(column+2*(i+2))%3;
                 }
                 break;
+            }
         }
         playerOption=-1;
     }else if(playerOption==-1&&playerOptions[4]==0){
