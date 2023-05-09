@@ -106,7 +106,7 @@ int isWin(int pos){
                 flag=0;
             }
         }
-        if(rflag&&row-i<15&&column-i>=0){
+        if(rflag&&row-i>=0&&column-i>=0){
             if(chequer==board[row-i][column-i]){
                 ++count;
             }else{
@@ -127,7 +127,7 @@ int isWin(int pos){
     rflag=1;
     //
     for(int i=1;i<5;++i){
-        if(flag&&row-i<15&&column+i<15){
+        if(flag&&row-i>=0&&column+i<15){
             if(chequer==board[row-i][column+i]){
                 ++count;
             }else{
