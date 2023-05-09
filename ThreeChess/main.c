@@ -43,7 +43,7 @@ int main(){
             do{
                 printf("Pleas enter:");
                 pos=playChess();
-            }while(isInvaild(pos));
+            }while(isInvalid(pos));
             chequer=getCurrChequer();
             switchToNextPlayer();
             addChequer(pos,chequer);

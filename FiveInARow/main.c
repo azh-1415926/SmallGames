@@ -3,7 +3,7 @@
 #include <stdlib.h>
 int printMenu(char* tips,char* options[],unsigned int n){
     printf("**************\n");
-    printf("**ThreeChess**\n");
+    printf("**FiveInARow**\n");
     printf("**************\n");
     printf("              \n");
     for(int i=0;i<n;i++)
@@ -43,14 +43,14 @@ int main(){
             do{
                 printf("Pleas enter:");
                 pos=playChess();
-            }while(isInvaild(pos));
+            }while(isInvalid(pos));
             chequer=getCurrChequer();
             switchToNextPlayer();
             addChequer(pos,chequer);
             clearScreen();
             printf("  %s\n",boardTitle);
             showChessBoard();
-            printf("lastChequer is set on postion %d.\n",pos+1);
+            printf("lastChequer is set on (%d,%d).\n",pos%15+1,pos/15+1);
             switch(isWin(pos)){
                 case -1:
                     break;

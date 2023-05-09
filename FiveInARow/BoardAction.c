@@ -25,7 +25,7 @@ void addChequer(int pos,char chequer){
     board[pos/15][pos%15]=chequer;
     ++chequerCount;
 }
-bool isInvaild(int pos){
+bool isInvalid(int pos){
     if(pos<0||pos>=225)
         return true;
     return board[pos/15][pos%15]!=chequerFiller;

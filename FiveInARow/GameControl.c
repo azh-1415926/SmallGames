@@ -24,13 +24,13 @@ static int getOption(char* title,char* options[],unsigned int n){
 }
 static int getPlayerOption(){
     int row=-1;
-    int coloum=-1;
+    int column=-1;
     int option=-1;
-    if(scanf("%d %d",&row,&coloum)!=2){
+    if(scanf("%d %d",&row,&column)!=2){
         scanf("%*s");
         option=-1;
     }else{
-        option=(row-1)*15+coloum-1;
+        option=(column-1)*15+row-1;
     }
     return option;
 }

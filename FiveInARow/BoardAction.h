@@ -6,6 +6,6 @@ void initalizeChessBoard(char filler);
 void showChessBoard();
 // char getChequer(int pos);
 void addChequer(int pos,char chequer);
-bool isInvaild(int pos);
+bool isInvalid(int pos);
 int isWin(int pos);
 #endif
