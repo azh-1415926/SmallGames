@@ -33,32 +33,33 @@ int isWin(int pos){
     int row=pos/3;
     int column=pos%3;
     int count=1;
-    int maxcount=1;
     char chequer=board[pos];
     for(int i=1;i<3;++i){
         if(chequer==board[(row+i)%3*3+column])
             ++count;
     }
-    maxcount=(maxcount<count)?(count):(maxcount);
+    if(count==3)
+        return 1;
     count=1;
     for(int i=1;i<3;++i){
         if(chequer==board[row*3+(column+i)%3])
             ++count;
     }
-    maxcount=(maxcount<count)?(count):(maxcount);
+    if(count==3)
+        return 1;
     count=1;
     for(int i=1;i<3&&(row==column);++i){
         if(chequer==board[(row+i)%3*3+(column+i)%3])
             ++count;
     }
-    maxcount=(maxcount<count)?(count):(maxcount);
+    if(count==3)
+        return 1;
     count=1;
     for(int i=1;i<3&&((row+column)==2);++i){
         if(chequer==board[(row+i)%3*3+(column+2*i)%3])
             ++count;
     }
-    maxcount=(maxcount<count)?(count):(maxcount);
-    if(maxcount==3)
+    if(count==3)
         return 1;
     if(chequerCount>8)
         return 0;

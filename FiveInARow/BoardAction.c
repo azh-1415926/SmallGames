@@ -16,11 +16,11 @@ void showChessBoard(){
         printf("| %d\n*---*---*---*---*---*---*---*---*---*---*---*---*---*---*---*\n",i+1);
     }
 }
-// char getChequer(int pos){
-//     // if(pos<0||pos>8)
-//     //     return '\0';
-//     // return board[pos];
-// }
+char getChequer(int pos){
+    if(pos<0||pos>=225)
+        return '\0';
+    return board[pos/15][pos%15];
+}
 void addChequer(int pos,char chequer){
     board[pos/15][pos%15]=chequer;
     ++chequerCount;
@@ -34,7 +34,6 @@ int isWin(int pos){
     int row=pos/15;
     int column=pos%15;
     int count=1;
-    int maxcount=1;
     int flag=1;
     int rflag=1;
     char chequer=board[row][column];
@@ -44,7 +43,6 @@ int isWin(int pos){
             if(chequer==board[row][column+i]){
                 ++count;
             }else{
-                count=count-(i-1);
                 flag=0;
             }
         }
@@ -52,7 +50,6 @@ int isWin(int pos){
             if(chequer==board[row][column-i]){
                 ++count;
             }else{
-                count=count-(i-1);
                 rflag=0;
             }
         }
@@ -60,10 +57,8 @@ int isWin(int pos){
             break;
         }
     }
-    if(count>maxcount){
-        maxcount=count;
+    if(count>=5)
         return 1;
-    }
     count=1;
     flag=1;
     rflag=1;
@@ -73,7 +68,6 @@ int isWin(int pos){
             if(chequer==board[row+i][column]){
                 ++count;
             }else{
-                count=count-(i-1);
                 flag=0;
             }
         }
@@ -81,7 +75,6 @@ int isWin(int pos){
             if(chequer==board[row-i][column]){
                 ++count;
             }else{
-                count=count-(i-1);
                 rflag=0;
             }
         }
@@ -89,10 +82,8 @@ int isWin(int pos){
             break;
         }
     }
-    if(count>maxcount){
-        maxcount=count;
+    if(count>=5)
         return 1;
-    }
     count=1;
     flag=1;
     rflag=1;
@@ -102,7 +93,6 @@ int isWin(int pos){
             if(chequer==board[row+i][column+i]){
                 ++count;
             }else{
-                count=count-(i-1);
                 flag=0;
             }
         }
@@ -110,7 +100,6 @@ int isWin(int pos){
             if(chequer==board[row-i][column-i]){
                 ++count;
             }else{
-                count=count-(i-1);
                 rflag=0;
             }
         }
@@ -118,10 +107,8 @@ int isWin(int pos){
             break;
         }
     }
-    if(count>maxcount){
-        maxcount=count;
+    if(count>=5)
         return 1;
-    }
     count=1;
     flag=1;
     rflag=1;
@@ -131,7 +118,6 @@ int isWin(int pos){
             if(chequer==board[row-i][column+i]){
                 ++count;
             }else{
-                count=count-(i-1);
                 flag=0;
             }
         }
@@ -139,7 +125,6 @@ int isWin(int pos){
             if(chequer==board[row+i][column-i]){
                 ++count;
             }else{
-                count=count-(i-1);
                 rflag=0;
             }
         }
@@ -147,14 +132,10 @@ int isWin(int pos){
             break;
         }
     }
-    if(count>maxcount){
-        maxcount=count;
+    if(count>=5)
         return 1;
+    if(chequerCount>=225){
+        return 0;
     }
-//     maxcount=(maxcount<count)?(count):(maxcount);
-//     if(maxcount==3)
-//         return 1;
-//     if(chequerCount>8)
-//         return 0;
     return -1;
 }

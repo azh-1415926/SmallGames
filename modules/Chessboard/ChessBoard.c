@@ -61,7 +61,6 @@ int isWin(int pos){
     int row=pos/_column;
     int column=pos%_column;
     int count=1;
-    int maxcount=1;
     int flag=1;
     int rflag=1;
     char chequer=pBoard[row][column];
@@ -87,12 +86,8 @@ int isWin(int pos){
             break;
         }
     }
-    if(count>maxcount){
-        maxcount=count;
-        if(maxcount>=_linkedCount){
-            return 1;
-        }
-    }
+    if(count>=_linkedCount){
+        return 1;
     count=1;
     flag=1;
     rflag=1;
@@ -118,12 +113,8 @@ int isWin(int pos){
             break;
         }
     }
-    if(count>maxcount){
-        maxcount=count;
-        if(maxcount>=_linkedCount){
-            return 1;
-        }
-    }
+    if(count>=_linkedCount){
+        return 1;
     count=1;
     flag=1;
     rflag=1;
@@ -149,12 +140,8 @@ int isWin(int pos){
             break;
         }
     }
-    if(count>maxcount){
-        maxcount=count;
-        if(maxcount>=_linkedCount){
-            return 1;
-        }
-    }
+    if(count>=_linkedCount){
+        return 1;
     count=1;
     flag=1;
     rflag=1;
@@ -180,10 +167,7 @@ int isWin(int pos){
             break;
         }
     }
-    if(count>maxcount){
-        maxcount=count;
-    }
-    if(maxcount>=_linkedCount){
+    if(count>=_linkedCount){
         return 1;
     }else if(_count>_row*_column-1){
         return 0;

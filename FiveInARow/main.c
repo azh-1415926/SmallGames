@@ -35,7 +35,7 @@ int main(){
     {
     case 1:
         initalizeChessBoard(filler);
-        initalizeGame('O','X');
+        initalizeGame('O','X',getChequer);
         printf("  %s\n",boardTitle);
         showChessBoard();
         boardTitle="Game Running!";

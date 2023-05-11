@@ -4,7 +4,7 @@
 #include <stdbool.h>
 void initalizeChessBoard(char filler);
 void showChessBoard();
-// char getChequer(int pos);
+char getChequer(int pos);
 void addChequer(int pos,char chequer);
 bool isInvalid(int pos);
 int isWin(int pos);
