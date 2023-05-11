@@ -72,6 +72,7 @@ void MainWindow::initalRecord()
 void MainWindow::initalGame()
 {
     connect(this,&MainWindow::startGame,[=](){
+        screen->clearScreen();
         control->initalControl();
         screen->show();
     });

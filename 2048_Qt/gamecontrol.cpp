@@ -16,12 +16,21 @@ GameControl::GameControl(QObject* parent)
 }
 
 void GameControl::initalControl(){
+    if(zeroCount!=16){
+        killTimer(timerId);
+        flag=0;
+        maxNumber=0;
+        totalScore=0;
+        zeroCount=16;
+        for(int i=0;i<4;i++){
+            for(int j=0;j<4;j++){
+                array[i][j]=0;
+            }
+        }
+    }
     timerId=startTimer(500);
     startTime=clock();
-    flag=0;
-    maxNumber=0;
-    totalScore=0;
-    zeroCount=16;
+    addNumber();
     addNumber();
 }
 
@@ -99,17 +108,6 @@ void GameControl::addNumber()
     array[pos/4][pos%4]=num;
     emit addPoint(pos,num);
     zeroCount--;
-    pos=-1;
-    while(pos==-1||pos!=-1&&array[pos/4][pos%4]!=0){
-        pos=rand()%16;
-        if(zeroCount==0){
-            return;
-        }
-    }
-    num=(rand()%2+1)*2;
-    array[pos/4][pos%4]=num;
-    emit addPoint(pos,num);
-    zeroCount--;
 }
 
 void GameControl::updateScore(int score)
@@ -134,6 +132,10 @@ void GameControl::resetFlag()
 void GameControl::closeGame()
 {
     killTimer(timerId);
+    flag=0;
+    maxNumber=0;
+    totalScore=0;
+    zeroCount=16;
     emit costTime((clock()-startTime)/1000.0);
     QMessageBox::Button result=QMessageBox::question(nullptr,"Game Over!","You failed!Do you want play again?",QMessageBox::Ok|QMessageBox::No,QMessageBox::No);
     if(result==QMessageBox::Ok){
