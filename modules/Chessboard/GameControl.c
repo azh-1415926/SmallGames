@@ -1,12 +1,11 @@
 #include "GameControl.h"
 #include<stdlib.h>
-#include<time.h>
+//#include<time.h>
 static char currChequer='-';
 static char playerChequer='-';
 static char computerChequer='-';
-static int playerOptions[9]={0};
-static bool(*_judgeInvalid)(int)=NULL;
 static int playerOption=-1;
+static int(*computerPlayer)(int)=NULL;
 static int getOption(char* title,char* options[],unsigned int n){
     int i=0;
     int option=-1;
@@ -23,65 +22,21 @@ static int getOption(char* title,char* options[],unsigned int n){
         printf("error option,system will give a automatic selection!\n");
         option=-1;
     }
-    return option;
+    return option-1;
 }
 static int getPlayerOption(){
     int option=-1;
     if(scanf("%d",&option)!=1)
         scanf("%*s");
-    if(option!=-1&&playerOptions[option-1]==0){
-        playerOptions[option-1]=1;
+    if(option!=-1){
         playerOption=option-1;
     }
     return option-1;
 }
 static int getComputerOption(){
     int option=-1;
-    if(playerOption!=-1){
-        int row=playerOption/3;
-        int column=playerOption%3;
-        for(int i=1;i<3;++i){
-            if(!_judgeInvalid((row+i)%3*3+column)){
-                option=(row+i+1)%3*3+column;
-                if(i==2){
-                    option=(row+i+2)%3*3+column;
-                }
-                break;
-            }
-            if(!_judgeInvalid(row*3+(column+i)%3)){
-                option=row*3+(column+i+1)%3;
-                if(i==2){
-                    option=row*3+(column+i+2)%3;
-                }
-                break;
-            }
-        }
-        for(int i=1;i<3&&(row==column);++i){
-            if(!_judgeInvalid((row+i)%3*3+(column+i)%3)){
-                option=(row+i+1)%3*3+(column+i+1)%3;
-                if(i==2){
-                    option=(row+i+2)%3*3+(column+i+2)%3;
-                }
-                break;
-            }
-        }
-        for(int i=1;i<3&&((row+column)==2);++i){
-            if(!_judgeInvalid((row+i)%3*3+(column+2*i)%3)){
-                option=(row+i+1)%3*3+(column+2*(i+1))%3;
-                if(i==2){
-                    option=(row+i+2)%3*3+(column+2*(i+2))%3;
-                }
-                break;
-            }
-        }
-        playerOption=-1;
-    }else if(playerOption==-1&&!_judgeInvalid(4)){
-        option=4;
-    }else if(playerOption==-1&&_judgeInvalid(4)){
-        option=(rand()%2)?(4+(rand()%2+1)*2):(4-(rand()%2+1)*2);
-        if(_judgeInvalid(0)&&_judgeInvalid(2)&&_judgeInvalid(6)&&_judgeInvalid(8)){
-            option=rand()%9;
-        }
+    if(computerPlayer!=NULL){
+        computer=computerPlayer(playerOption);
     }
     return option;
 }
@@ -94,14 +49,14 @@ void initalizeGame(char firstChequer,char secondChequer){
     char* players[]={"player","computer"};
     int choose=0;
     choose=getOption("Chequer Option",chequers,2);
-    playerChequer=(choose==1?firstChequer:secondChequer);
-    computerChequer=(choose==1?secondChequer:firstChequer);
+    playerChequer=(choose==0?firstChequer:secondChequer);
+    computerChequer=(choose==0?secondChequer:firstChequer);
     choose=getOption("Player Option",players,2);
-    currChequer=(choose==1?playerChequer:computerChequer);
-    srand((unsigned)time(NULL));
+    currChequer=(choose==0?playerChequer:computerChequer);
+    //srand((unsigned)time(NULL));
 }
-void setJudgeFunc(bool(*judge)(int)){
-    _judgeInvalid=judge;
+void setComputerPlayer(int(*computer)(int)){
+    computerPlayer=computer;
 }
 int playChess(){
     if(currChequer==computerChequer)

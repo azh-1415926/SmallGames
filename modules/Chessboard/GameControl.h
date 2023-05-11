@@ -3,7 +3,7 @@
 #include<stdio.h>
 #include <stdbool.h>
 void initalizeGame(char firstChequer,char secondChequer);
-void setJudgeFunc(bool(*judge)(int));
+void setComputerPlayer(int(*computer)(int));
 int playChess();
 char getCurrChequer();
 void switchToNextPlayer();
