@@ -74,9 +74,7 @@ void MainWindow::initalGame()
 {
     connect(this,&MainWindow::startGame,[=](){
         control->initalControl();
-        screen->addFood();
-        screen->updatePoint(40);
-        screen->show();
+        screen->initalScreen();
         snake->initalSnake();
 
     });
@@ -92,16 +90,7 @@ void MainWindow::initalGame()
         i++;
     });
     connect(control,&GameControl::restartGame,this,[=](){
-        snake->clearSnake();
-        snake->getLength();
-        screen->clearScreen();
-        screen->close();
-//        control->initalControl();
-//        screen->addFood();
-//        screen->updatePoint(40);
-//        screen->show();
-//        snake->initalSnake();
-        i++;
+        emit control->exitGame();
         emit startGame();
     });
     connect(control,&GameControl::moving,snake,&SnakeAction::moveTo);

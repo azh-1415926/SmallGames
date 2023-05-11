@@ -19,11 +19,12 @@ void GameControl::timerEvent(QTimerEvent *event)
 }
 
 void GameControl::initalControl(){
+    killTimer(timerId);
+    timerId=startTimer(1000);
+    startTime=clock();
     lastDirection=0;
     head=tail=40;
-    timerId=startTimer(1000);
     flag=0;
-    startTime=clock();
 }
 
 void GameControl::moveTo(int direction)

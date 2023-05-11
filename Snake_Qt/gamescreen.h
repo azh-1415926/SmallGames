@@ -19,6 +19,7 @@ signals:
     void findFood(int pos);
     void closeGame();
 public slots:
+    void initalScreen();
     void updatePoint(int pos);
     void clearPoint(int pos);
     void addFood();

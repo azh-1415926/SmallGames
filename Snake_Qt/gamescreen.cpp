@@ -7,12 +7,22 @@ GameScreen::GameScreen(QWidget* parent)
     , scene(new QGraphicsScene)
     , view(new QGraphicsView(scene,this))
     , group(new QGraphicsItemGroup)
+    , food(nullptr)
 {
-    setFocusPolicy(Qt::StrongFocus);
+    //setFocusPolicy(Qt::StrongFocus);
     inital();
     for(int i=0;i<81;i++){
         snakeShape<<nullptr;
     }
+}
+
+void GameScreen::initalScreen(){
+    if(food!=nullptr){
+        clearScreen();
+    }
+    addFood();
+    updatePoint(40);
+    show();
 }
 
 void GameScreen::updatePoint(int pos)
