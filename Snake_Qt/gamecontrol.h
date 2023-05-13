@@ -27,6 +27,7 @@ public slots:
     void moveSnake(QPoint const& point);
     void updateHead(QPoint const& head);
     void updateTail(QPoint const& tail);
+    void clearGame();
     void closeGame();
 private:
     int timerId;

@@ -81,7 +81,8 @@ void MainWindow::initalGame()
     connect(screen,&GameScreen::clickScreen,control,&GameControl::moveSnake);
     connect(screen,&GameScreen::pressKeyboard,control,&GameControl::moveTo);
     connect(screen,&GameScreen::findFood,snake,&SnakeAction::eatFood);
-    connect(screen,&GameScreen::closeGame,control,&GameControl::closeGame);
+    connect(screen,&GameScreen::clearGame,control,&GameControl::clearGame);
+    connect(screen,&GameScreen::exitGame,control,&GameControl::closeGame);
     connect(control,&GameControl::exitGame,this,[=](){
         snake->clearSnake();
         snake->getLength();

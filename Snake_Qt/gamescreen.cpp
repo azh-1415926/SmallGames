@@ -1,6 +1,7 @@
 
 #include "gamescreen.h"
 #include <QMouseEvent>
+#include <QMessageBox>
 
 GameScreen::GameScreen(QWidget* parent)
     : QWidget(parent)
@@ -20,8 +21,8 @@ void GameScreen::initalScreen(){
     if(food!=nullptr){
         clearScreen();
     }
-    addFood();
     updatePoint(40);
+    addFood();
     show();
 }
 
@@ -39,7 +40,8 @@ void GameScreen::updatePoint(int pos)
         addFood();
         emit findFood(pos);
     }else{
-        emit closeGame();
+        emit clearGame();
+        emit exitGame();
     }
 }
 
@@ -121,6 +123,13 @@ void GameScreen::keyReleaseEvent(QKeyEvent* event)
     default:
         break;
     }
+}
+
+void GameScreen::closeEvent(QCloseEvent *event)
+{
+    clearScreen();
+    emit clearGame();
+    event->accept();
 }
 
 void GameScreen::inital()

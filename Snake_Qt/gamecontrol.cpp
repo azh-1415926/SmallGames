@@ -107,6 +107,11 @@ void GameControl::updateTail(const QPoint &tail)
     this->tail=(tail.x()-25)/50+(tail.y()-25)/50*9;
 }
 
+void GameControl::clearGame()
+{
+    killTimer(timerId);
+}
+
 void GameControl::closeGame()
 {
     killTimer(timerId);

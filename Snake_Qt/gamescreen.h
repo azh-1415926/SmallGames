@@ -17,7 +17,8 @@ signals:
     void clickScreen(QPoint const& point);
     void pressKeyboard(int direction);
     void findFood(int pos);
-    void closeGame();
+    void clearGame();
+    void exitGame();
 public slots:
     void initalScreen();
     void updatePoint(int pos);
@@ -28,6 +29,7 @@ protected:
     void mousePressEvent(QMouseEvent* event) override;
     void keyPressEvent(QKeyEvent* event) override;
     void keyReleaseEvent(QKeyEvent* event) override;
+    void closeEvent(QCloseEvent* event) override;
 private:
     QGraphicsScene* scene;
     QGraphicsView* view;
