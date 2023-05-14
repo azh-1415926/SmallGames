@@ -42,10 +42,10 @@ int main(){
         int currAction=MOVE_FRONT;
         int lastAction=currAction;
         linkQueueInitalize(&snakeShape);
+        setBoard('*','-','|');
         initalizeGameScreen(_rows,_columns,_filler);
         initalizeGame(_rows,_columns);
         initalizeSnake(pos);
-        setBoard('*','-','|');
         addPoint(getAPoint(),_food);
         startTime=time(NULL);
         while(1){
@@ -90,6 +90,7 @@ int main(){
             }
         }
         linkQueueFree(&snakeShape);
+        freeGameScreen();
         printf("Game Over!,the score is %d\n",getLength()*5);
     }else if(option==2){
         printf("Exit!\n");

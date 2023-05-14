@@ -86,7 +86,7 @@ int isWin(int pos){
             break;
         }
     }
-    if(count>=_linkedCount){
+    if(count>=_linkedCount)
         return 1;
     count=1;
     flag=1;
@@ -113,7 +113,7 @@ int isWin(int pos){
             break;
         }
     }
-    if(count>=_linkedCount){
+    if(count>=_linkedCount)
         return 1;
     count=1;
     flag=1;
@@ -140,7 +140,7 @@ int isWin(int pos){
             break;
         }
     }
-    if(count>=_linkedCount){
+    if(count>=_linkedCount)
         return 1;
     count=1;
     flag=1;
