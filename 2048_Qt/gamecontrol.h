@@ -26,7 +26,10 @@ public slots:
     void updateScore(int score);
     void setFlag();
     void resetFlag();
-    void closeGame();
+    void clearGame();
+    void lostGame();
+    void winGame();
+
 protected:
     void timerEvent(QTimerEvent *event) override;
 private:

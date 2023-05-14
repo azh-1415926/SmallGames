@@ -17,18 +17,9 @@ GameControl::GameControl(QObject* parent)
 
 void GameControl::initalControl(){
     if(zeroCount!=16){
-        killTimer(timerId);
-        flag=0;
-        maxNumber=0;
-        totalScore=0;
-        zeroCount=16;
-        for(int i=0;i<4;i++){
-            for(int j=0;j<4;j++){
-                array[i][j]=0;
-            }
-        }
+        clearGame();
     }
-    timerId=startTimer(500);
+    timerId=startTimer(250);
     startTime=clock();
     addNumber();
     addNumber();
@@ -64,18 +55,10 @@ void GameControl::moving(int direction)
     }
     addNumber();
     if(maxNumber==2048){
-        //win
-        killTimer(timerId);
-        emit costTime((clock()-startTime)/1000.0);
-        QMessageBox::Button result=QMessageBox::question(nullptr,"Game Over!","You win!Do you want play again?",QMessageBox::Ok|QMessageBox::No,QMessageBox::No);
-        if(result==QMessageBox::Ok){
-            emit restartGame();
-        }else{
-            emit exitGame();
-        }
+        winGame();
     }else if(zeroCount==0){
         if(isOver()){
-            closeGame();
+            lostGame();
         }
     }
     qDebug()<<"----------------";
@@ -83,15 +66,6 @@ void GameControl::moving(int direction)
         qDebug()<<"|"<<array[i][0]<<"|"<<array[i][1]<<"|"<<array[i][2]<<"|"<<array[i][3]<<"|";
     }
     qDebug()<<"----------------";
-//    for(int i=0;i<4;i++){
-//        for(int j=0;j<4;j++){
-//            if(array[i][j]==0){
-//                emit delPoint(i*4+j);
-//            }else{
-//                emit addPoint(i*4+j,array[i][j]);
-//            }
-//        }
-//    }
 }
 
 void GameControl::addNumber()
@@ -112,8 +86,8 @@ void GameControl::addNumber()
 
 void GameControl::updateScore(int score)
 {
-    if(score>maxNumber){
-        maxNumber=score;
+    if(score>maxNumber/2){
+        maxNumber=score*2;
     }
     totalScore+=score;
     zeroCount++;
@@ -129,15 +103,35 @@ void GameControl::resetFlag()
     flag=0;
 }
 
-void GameControl::closeGame()
+void GameControl::clearGame()
 {
     killTimer(timerId);
     flag=0;
     maxNumber=0;
     totalScore=0;
     zeroCount=16;
+    memset(array,0,sizeof(array));
+}
+
+void GameControl::lostGame()
+{
     emit costTime((clock()-startTime)/1000.0);
+    emit sendScore(totalScore);
+    clearGame();
     QMessageBox::Button result=QMessageBox::question(nullptr,"Game Over!","You failed!Do you want play again?",QMessageBox::Ok|QMessageBox::No,QMessageBox::No);
+    if(result==QMessageBox::Ok){
+        emit restartGame();
+    }else{
+        emit exitGame();
+    }
+}
+
+void GameControl::winGame()
+{
+    emit costTime((clock()-startTime)/1000.0);
+    emit sendScore(totalScore);
+    clearGame();
+    QMessageBox::Button result=QMessageBox::question(nullptr,"Game Over!","You win!Do you want play again?",QMessageBox::Ok|QMessageBox::No,QMessageBox::No);
     if(result==QMessageBox::Ok){
         emit restartGame();
     }else{
@@ -190,7 +184,7 @@ void GameControl::moveLeft(){
         for(int j=1;j<4;j++){
             for(int k=1;k<4&&j-k>=0;){
                 if(array[i][j]!=0&&array[i][j]==array[i][j-k]){
-                    updateScore(array[j][i]);
+                    updateScore(array[i][j]);
                     array[i][j-k]=0;
                     array[i][j]*=2;
                     emit delPoint(i*4+j-k);
@@ -225,7 +219,7 @@ void GameControl::moveRight(){
         for(int j=3;j>=0;j--){
             for(int k=1;k<4&&j+k<4;){
                 if(array[i][j]!=0&&array[i][j]==array[i][j+k]){
-                    updateScore(array[j][i]);
+                    updateScore(array[i][j]);
                     array[i][j+k]=0;
                     array[i][j]*=2;
                     emit delPoint(i*4+j+k);
@@ -303,7 +297,5 @@ bool GameControl::isOver()
             }
         }
     }
-    memset(array,0,sizeof(array));
-    emit sendScore(totalScore);
     return true;
 }
