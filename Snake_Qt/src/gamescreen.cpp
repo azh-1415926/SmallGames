@@ -26,6 +26,12 @@ void GameScreen::initalScreen(){
     show();
 }
 
+GameScreen::~GameScreen()
+{
+    delete scene;
+    delete group;
+}
+
 void GameScreen::updatePoint(int pos)
 {
     int row=pos/9;

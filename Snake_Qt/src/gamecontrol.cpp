@@ -123,4 +123,3 @@ void GameControl::closeGame()
         emit exitGame();
     }
 }
-

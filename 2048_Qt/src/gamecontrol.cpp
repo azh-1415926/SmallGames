@@ -15,6 +15,11 @@ GameControl::GameControl(QObject* parent)
     srand(time(NULL));
 }
 
+GameControl::~GameControl()
+{
+    
+}
+
 void GameControl::initalControl(){
     if(zeroCount!=16){
         clearGame();

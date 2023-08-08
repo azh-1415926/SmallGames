@@ -23,6 +23,8 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
+    delete chess;
+    delete control;
 }
 
 void MainWindow::addRecord(QString const&gamer, int time)

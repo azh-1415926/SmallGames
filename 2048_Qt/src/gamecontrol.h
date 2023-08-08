@@ -12,6 +12,7 @@ class GameControl : public QObject
     Q_OBJECT
 public:
     GameControl(QObject* parent=nullptr);
+    ~GameControl();
 signals:
     void costTime(double time);
     void sendScore(int score);

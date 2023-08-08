@@ -161,7 +161,7 @@ bool ChessBoard::isWin(int pos)
 }
 void ChessBoard::mousePressEvent(QMouseEvent* event)
 {
-    int pos=playerAction(event->x(),event->y());
+    int pos=playerAction(event->position().x(),event->position().y());
     if(pos!=-1){
         emit clickBoard(pos);
     }

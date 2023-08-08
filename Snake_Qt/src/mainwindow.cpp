@@ -18,6 +18,9 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
+    delete screen;
+    delete snake;
+    delete control;
 }
 
 void MainWindow::setTime(double time)

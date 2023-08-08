@@ -13,6 +13,7 @@ class GameScreen : public QWidget
     Q_OBJECT
 public:
     GameScreen(QWidget* parent=nullptr);
+    ~GameScreen();
 signals:
     void clickScreen(QPoint const& point);
     void pressKeyboard(int direction);

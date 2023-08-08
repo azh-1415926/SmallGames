@@ -14,6 +14,7 @@ class GameScreen : public QWidget
     Q_OBJECT
 public:
     GameScreen(QWidget* parent=nullptr);
+    ~GameScreen();
 signals:
     void goTo(int direction);
 public slots:

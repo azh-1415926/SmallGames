@@ -21,6 +21,12 @@ GameScreen::GameScreen(QWidget* parent)
     }
 }
 
+GameScreen::~GameScreen()
+{
+    delete scene;
+    delete group;
+}
+
 void GameScreen::updatePoint(int pos,int num)
 {
     if(background[pos]==nullptr){
