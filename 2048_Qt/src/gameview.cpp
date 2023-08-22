@@ -2,6 +2,7 @@
 #include <QMouseEvent>
 #include <QHBoxLayout>
 #include <QMessageBox>
+#include <QDebug>
 
 gameView::gameView(QWidget* parent)
     : QWidget(parent)

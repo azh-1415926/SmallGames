@@ -8,11 +8,17 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(CMAKE_PREFIX_PATH "D:/Qt/6.5.0/mingw_64")
+# 请自行填写 qt 工具链所在路径
+# set(CMAKE_PREFIX_PATH "D:/Qt/6.5.0/mingw_64")
+
+# 根目录
 set(ROOT_DIR ../)
 
-find_package(Qt6 COMPONENTS Widgets REQUIRED) # Qt COMPONENTS
+# 默认版本 Qt6，其次 Qt5
+find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets REQUIRED) # Qt COMPONENTS
 
+# 搜寻源文件
 aux_source_directory(./src srcs)
 aux_source_directory(${ROOT_DIR}/component components)
 
@@ -20,10 +26,11 @@ aux_source_directory(${ROOT_DIR}/component components)
 add_compile_options("$<$<C_COMPILER_ID:MSVC>:/utf-8>")
 add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
 
+# 添加源文件
 add_executable(${PROJECT_NAME}
-    # WIN32 # If you need a terminal for debug, please comment this statement
+    # WIN32 # 若需要控制台调试可以注释这一条 # If you need a terminal for debug, please comment this statement
     ${srcs}
     ${components}
 ) 
-target_link_libraries(${PROJECT_NAME} PRIVATE Qt6::Widgets) # Qt5 Shared Library
+target_link_libraries(${PROJECT_NAME} PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 target_include_directories(${PROJECT_NAME} PRIVATE ${ROOT_DIR}/component)

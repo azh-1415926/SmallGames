@@ -1,5 +1,6 @@
 #include "gamescreen.h"
 #include <QMouseEvent>
+#include <QDebug>
 
 gameScreen::gameScreen(QWidget* parent)
     : QWidget(parent)
@@ -19,31 +20,57 @@ void gameScreen::setGame(QWidget* game)
 
 void gameScreen::mousePressEvent(QMouseEvent* event)
 {
-    qDebug()<<"Mouse : press on "<<event->position();
-    clickPoint.rx()=event->position().x();
-    clickPoint.ry()=event->position().y();
+    #if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
+        qDebug()<<"Mouse : press on "<<event->pos();
+        clickPoint.rx()=event->pos().x();
+        clickPoint.ry()=event->pos().y();
+    #elif (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+        qDebug()<<"Mouse : press on "<<event->position();
+        clickPoint.rx()=event->position().x();
+        clickPoint.ry()=event->position().y();
+    #endif
+    emit clicked(clickPoint);
     grabMouse();
-    clicked(clickPoint);
 }
 
 void gameScreen::mouseReleaseEvent(QMouseEvent *event)
 {
     releaseMouse();
-    qDebug()<<"Mouse : release on the "<<event->position();
-    double k=(event->position().y()-clickPoint.y())/(event->position().x()-clickPoint.x());
-    if((k>1||k<-1)&&event->position().y()<clickPoint.y()){
-        qDebug()<<"Mouse : go to front";
-        emit moveTo(directionOfFront);
-    }else if(k<1&&k>-1&&event->position().x()>clickPoint.x()){
-        qDebug()<<"Mouse : go to right";
-        emit moveTo(directionOfRight);
-    }else if((k>1||k<-1)&&event->position().y()>clickPoint.y()){
-        qDebug()<<"Mouse : go to behind";
-        emit moveTo(directionOfBehind);
-    }else if(k<1&&k>-1&&event->position().x()<clickPoint.x()){
-        qDebug()<<"Mouse : go to left";
-        emit moveTo(directionOfLeft);
-    }
+    #if (QT_VERSION <= QT_VERSION_CHECK(6,0,0))
+        qDebug()<<"Mouse : release on the "<<event->pos();
+        qreal x=event->pos().x()-clickPoint.x();
+        qreal y=event->pos().y()-clickPoint.y();
+        double k=(x!=0)?y/x:0;
+        if((k>1||k<-1)&&event->pos().y()<clickPoint.y()){
+            qDebug()<<"Mouse : go to front";
+            emit moveTo(directionOfFront);
+        }else if(k<1&&k>-1&&event->pos().x()>clickPoint.x()){
+            qDebug()<<"Mouse : go to right";
+            emit moveTo(directionOfRight);
+        }else if((k>1||k<-1)&&event->pos().y()>clickPoint.y()){
+            qDebug()<<"Mouse : go to behind";
+            emit moveTo(directionOfBehind);
+        }else if(k<1&&k>-1&&event->pos().x()<clickPoint.x()){
+            qDebug()<<"Mouse : go to left";
+            emit moveTo(directionOfLeft);
+        }
+    #elif (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+        qDebug()<<"Mouse : release on the "<<event->position();
+        double k=(event->position().y()-clickPoint.y())/(event->position().x()-clickPoint.x());
+        if((k>1||k<-1)&&event->position().y()<clickPoint.y()){
+            qDebug()<<"Mouse : go to front";
+            emit moveTo(directionOfFront);
+        }else if(k<1&&k>-1&&event->position().x()>clickPoint.x()){
+            qDebug()<<"Mouse : go to right";
+            emit moveTo(directionOfRight);
+        }else if((k>1||k<-1)&&event->position().y()>clickPoint.y()){
+            qDebug()<<"Mouse : go to behind";
+            emit moveTo(directionOfBehind);
+        }else if(k<1&&k>-1&&event->position().x()<clickPoint.x()){
+            qDebug()<<"Mouse : go to left";
+            emit moveTo(directionOfLeft);
+        }
+    #endif
 }
 
 void gameScreen::keyPressEvent(QKeyEvent *event)
