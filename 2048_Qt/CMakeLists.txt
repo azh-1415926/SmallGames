@@ -1,58 +1,29 @@
-cmake_minimum_required(VERSION 3.5)
-
-project(2048 VERSION 0.1 LANGUAGES CXX)
-
-set(CMAKE_PREFIX_PATH "D:/Qt/6.5.0/mingw_64")
-
+cmake_minimum_required(VERSION 3.5) # CMake install : https://cmake.org/download/
+project(2048_Qt LANGUAGES CXX)
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+set(CMAKE_PREFIX_PATH "D:/Qt/6.5.0/mingw_64") # Qt Kit Dir
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
-
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
+set(CMAKE_PREFIX_PATH "D:/Qt/6.5.0/mingw_64")
+set(ROOT_DIR ../)
 
-aux_source_directory(./src PROJECT_SOURCES)
+find_package(Qt6 COMPONENTS Widgets REQUIRED) # Qt COMPONENTS
 
-if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
-    qt_add_executable(2048
-        MANUAL_FINALIZATION
-        ${PROJECT_SOURCES}
-    )
-# Define target properties for Android with Qt 6 as:
-#    set_property(TARGET 2048 APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
-#                 ${CMAKE_CURRENT_SOURCE_DIR}/android)
-# For more information, see https://doc.qt.io/qt-6/qt-add-executable.html#target-creation
-else()
-    if(ANDROID)
-        add_library(2048 SHARED
-            ${PROJECT_SOURCES}
-        )
-# Define properties for Android with Qt 5 after find_package() calls as:
-#    set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android")
-    else()
-        add_executable(2048
-            ${PROJECT_SOURCES}
-        )
-    endif()
-endif()
+aux_source_directory(./src srcs)
+aux_source_directory(${ROOT_DIR}/component components)
 
-target_link_libraries(2048 PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+# Specify MSVC UTF-8 encoding   
+add_compile_options("$<$<C_COMPILER_ID:MSVC>:/utf-8>")
+add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
 
-set_target_properties(2048 PROPERTIES
-    MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com
-    MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
-    MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
-    MACOSX_BUNDLE TRUE
-    WIN32_EXECUTABLE TRUE
-)
-
-install(TARGETS 2048
-    BUNDLE DESTINATION .
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
-
-if(QT_VERSION_MAJOR EQUAL 6)
-    qt_finalize_executable(2048)
-endif()
+add_executable(${PROJECT_NAME}
+    # WIN32 # If you need a terminal for debug, please comment this statement
+    ${srcs}
+    ${components}
+) 
+target_link_libraries(${PROJECT_NAME} PRIVATE Qt6::Widgets) # Qt5 Shared Library
+target_include_directories(${PROJECT_NAME} PRIVATE ${ROOT_DIR}/component)

@@ -1,12 +1,9 @@
-
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
-
+#pragma once
 #include <QMainWindow>
 #include <QTableWidget>
+#include "recordtable.h"
 #include "gamescreen.h"
-#include "gamecontrol.h"
-
+#include "gameview.h"
 
 class MainWindow : public QMainWindow
 
@@ -16,23 +13,21 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+
 signals:
-    void startGame();
-    void clearRecord();
+    ;
+
 public slots:
-    void setTime(double time);
-    void setScore(int score);
+    ;
+
 private:
     QMenuBar* menu;
     QMenu* startMenu;
     QMenu* helpMenu;
-    QTableWidget* recordTable;
-    GameScreen* screen;
-    GameControl* control;
-    int i;
+    recordTable* record;
+    gameScreen* screen;
+    gameView* game;
+    QPair<double,int> info;
     void initalMenu();
-    void initalRecord();
     void initalGame();
 };
-
-#endif // MAINWINDOW_H
