@@ -38,12 +38,8 @@ void MainWindow::initalMenu()
         screen->show();
         game->startGame();
     });
-    connect(recordAction,&QAction::triggered,this,[=](){
-        record->show();
-    });
-    connect(clearAction,&QAction::triggered,this,[=](){
-        record->clear();
-    });
+    connect(recordAction,&QAction::triggered,record,&QWidget::show);
+    connect(clearAction,&QAction::triggered,record,&recordTable::clear);
     connect(exitAction,&QAction::triggered,this,&QMainWindow::close);
     connect(aboutAction,&QAction::triggered,this,[=](){
         QMessageBox::about(this,tr("about"),tr("This a little game."));

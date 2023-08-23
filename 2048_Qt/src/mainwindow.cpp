@@ -39,12 +39,8 @@ void MainWindow::initalMenu()
         screen->show();
         game->startGame();
     });
-    connect(recordAction,&QAction::triggered,this,[=](){
-        record->show();
-    });
-    connect(clearAction,&QAction::triggered,this,[=](){
-        record->clear();
-    });
+    connect(recordAction,&QAction::triggered,record,&QWidget::show);
+    connect(clearAction,&QAction::triggered,record,&recordTable::clear);
     connect(exitAction,&QAction::triggered,this,&QMainWindow::close);
     connect(aboutAction,&QAction::triggered,this,[=](){
         QMessageBox::about(this,tr("About"),tr("This is a little game."));
@@ -57,14 +53,12 @@ void MainWindow::initalGame()
     record->resize(400,400);
     record->setTableTitle(QStringList()<<tr("Cost Time")<<tr("Score"));
     screen->setGame(game);
-    connect(game,&gameView::settleTime,[=](double costTime){
+    connect(game,&gameView::settleTime,this,[=](double costTime){
         info.first=costTime;
     });
-    connect(game,&gameView::settleScore,[=](int score){
+    connect(game,&gameView::settleScore,this,[=](int score){
         info.second=score;
         record->addRecord(QStringList()<<QString::number(info.first)<<QString::number(info.second));
     });
-    connect(game,&gameView::closeGame,[=](){
-        screen->close();
-    });
+    connect(game,&gameView::closeGame,screen,&gameScreen::close);
 }

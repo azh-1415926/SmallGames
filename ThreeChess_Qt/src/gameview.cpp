@@ -126,7 +126,7 @@ void gameView::addChequer(int pos)
     }
     if(pos==-1||chequers[pos]!=nullptr){
         pos=chequers.indexOf(nullptr);
-        if(pos!=-1);
+        if(pos!=-1)
             getOptionAgain();
         return;
     }
