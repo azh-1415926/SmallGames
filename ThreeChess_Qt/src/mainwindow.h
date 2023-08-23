@@ -1,11 +1,10 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#pragma once
 
 #include <QMainWindow>
 #include <QMenuBar>
-#include <QTableWidget>
-#include "chessboard.h"
-#include "GameControl.h"
+#include "gameview.h"
+#include "recordtable.h"
+#include "gamescreen.h"
 
 class MainWindow : public QMainWindow
 {
@@ -14,17 +13,15 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-public slots:
-    void addRecord(QString const& gamer,int time);
+
 private:
-    ChessBoard* chess;
-    GameControl* control;
     QMenuBar* menu;
     QMenu* startMenu;
     QMenu* helpMenu;
-    QTableWidget* recordTab;
-    int recordCount;
-    int currCount;
+    recordTable* record;
+    gameScreen* screen;
+    gameView* game;
+    QPair<QString,double> info;
     void initalMenu();
+    void initalGame();
 };
-#endif // MAINWINDOW_H
