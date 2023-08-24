@@ -5,106 +5,61 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , menu(menuBar())
-    , recordTable(new QTableWidget(this))
-    , screen(new GameScreen)
-    , snake(new SnakeAction)
-    , control(new GameControl)
+    , record(new recordTable)
+    , screen(new gameScreen)
+    , game(new gameView)
 {
     initalMenu();
-    initalRecord();
     initalGame();
 }
 
 MainWindow::~MainWindow()
 {
+    delete record;
     delete screen;
-    delete snake;
-    delete control;
-}
-
-void MainWindow::setTime(double time)
-{
-    if(i>=5){
-        return;
-    }
-    recordTable->setItem(i,0,new QTableWidgetItem(QString::number(time)));
-}
-
-void MainWindow::setLength(int length)
-{
-    if(i>=5){
-        return;
-    }
-    recordTable->setItem(i,1,new QTableWidgetItem(QString::number(length)));
+    delete game;
 }
 
 void MainWindow::initalMenu()
 {
+    menu=menuBar();
     startMenu=menu->addMenu(tr("start"));
     helpMenu=menu->addMenu(tr("help"));
     QAction* startAction=new QAction(tr("start game"));
+    QAction* recordAction=new QAction(tr("open record"));
     QAction* clearAction=new QAction(tr("clear record"));
     QAction* exitAction=new QAction(tr("exit"));
     QAction* aboutAction=new QAction(tr("about"));
     startMenu->addAction(startAction);
+    startMenu->addAction(recordAction);
     startMenu->addAction(clearAction);
     startMenu->addAction(exitAction);
     helpMenu->addAction(aboutAction);
-    connect(startAction,&QAction::triggered,this,&MainWindow::startGame);
-    connect(clearAction,&QAction::triggered,this,[=](){
-        recordTable->clear();
-        recordTable->setHorizontalHeaderLabels(QStringList()<<tr("Cost Time")<<tr("Length"));
-        i=0;
+    connect(startAction,&QAction::triggered,this,[=](){
+        screen->show();
+        game->startGame();
     });
+    connect(recordAction,&QAction::triggered,record,&QWidget::show);
+    connect(clearAction,&QAction::triggered,record,&recordTable::clear);
     connect(exitAction,&QAction::triggered,this,&QMainWindow::close);
     connect(aboutAction,&QAction::triggered,this,[=](){
         QMessageBox::about(this,"About","This is a little game.");
     });
 }
 
-void MainWindow::initalRecord()
-{
-    i=0;
-    recordTable->setGeometry(50,100,400,300);
-    recordTable->setColumnCount(2);
-    recordTable->setRowCount(5);
-    recordTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    recordTable->setHorizontalHeaderLabels(QStringList()<<tr("Cost Time")<<tr("Length"));
-}
-
 void MainWindow::initalGame()
 {
-    connect(this,&MainWindow::startGame,[=](){
-        control->initalControl();
-        screen->initalScreen();
-        snake->initalSnake();
-
+    record->setTableTitle(QStringList()<<tr("Cost Time")<<tr("Length"));
+    screen->setGame(game);
+    screen->resize(600,600);
+    connect(screen,&gameScreen::clicked,game,&gameView::clickPoint);
+    connect(screen,&gameScreen::moveTo,game,&gameView::moveTo);
+    connect(game,&gameView::closeGame,screen,&gameScreen::close);
+    connect(game,&gameView::settleTime,this,[=](double time){
+        info.first=time;
     });
-    connect(screen,&GameScreen::clickScreen,control,&GameControl::moveSnake);
-    connect(screen,&GameScreen::pressKeyboard,control,&GameControl::moveTo);
-    connect(screen,&GameScreen::findFood,snake,&SnakeAction::eatFood);
-    connect(screen,&GameScreen::clearGame,control,&GameControl::clearGame);
-    connect(screen,&GameScreen::exitGame,control,&GameControl::closeGame);
-    connect(control,&GameControl::exitGame,this,[=](){
-        snake->clearSnake();
-        snake->getLength();
-        screen->clearScreen();
-        screen->close();
-        i++;
+    connect(game,&gameView::settleLength,this,[=](int length){
+        info.second=length;
+        record->addRecord(QStringList()<<QString::number(info.first)<<QString::number(info.second));
     });
-    connect(control,&GameControl::restartGame,this,[=](){
-        emit control->exitGame();
-        emit startGame();
-    });
-    connect(control,&GameControl::moving,snake,&SnakeAction::moveTo);
-    connect(control,&GameControl::moveHead,screen,&GameScreen::updatePoint);
-    connect(control,&GameControl::moveTail,screen,&GameScreen::clearPoint);
-    connect(control,&GameControl::costTime,this,&MainWindow::setTime);
-
-    connect(snake,&SnakeAction::moveHead,control,&GameControl::updateHead);
-    connect(snake,&SnakeAction::moveTail,control,&GameControl::updateTail);
-    connect(snake,&SnakeAction::sendLength,this,&MainWindow::setLength);
 }
-
-
