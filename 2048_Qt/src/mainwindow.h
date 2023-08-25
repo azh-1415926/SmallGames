@@ -1,6 +1,5 @@
 #pragma once
 #include <QMainWindow>
-#include <QTableWidget>
 #include "recordtable.h"
 #include "gamescreen.h"
 #include "gameview.h"
@@ -14,10 +13,10 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-signals:
+public slots:
     ;
 
-public slots:
+signals:
     ;
 
 private:
