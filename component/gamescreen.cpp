@@ -5,6 +5,7 @@
 gameScreen::gameScreen(QWidget* parent)
     : QWidget(parent)
 {
+    /* 初始化游戏屏幕 */
     initalScreen();
 }
 
@@ -13,11 +14,21 @@ gameScreen::~gameScreen()
     ;
 }
 
+/* 设置游戏窗口 */
 void gameScreen::setGame(QWidget* game)
 {
     layout->addWidget(game);
 }
 
+/* 初始化屏幕 */
+void gameScreen::initalScreen()
+{
+    /* 调整窗口大小、设置垂直布局为整体布局 */
+    resize(500,500);
+    layout=new QHBoxLayout(this);
+}
+
+/* 重写鼠标点击事件，发送 clicked(const QPoint&)信号 */
 void gameScreen::mousePressEvent(QMouseEvent* event)
 {
     #if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
@@ -33,6 +44,7 @@ void gameScreen::mousePressEvent(QMouseEvent* event)
     grabMouse();
 }
 
+/* 重写鼠标点释放事件，计算鼠标点击和释放的偏移方向，发送 moveTo(enum moveDirection)信号 */
 void gameScreen::mouseReleaseEvent(QMouseEvent *event)
 {
     releaseMouse();
@@ -73,30 +85,28 @@ void gameScreen::mouseReleaseEvent(QMouseEvent *event)
     #endif
 }
 
+/* 重写键盘点击事件，发送 moveTo(enum moveDirection)信号 */
 void gameScreen::keyPressEvent(QKeyEvent *event)
 {
     switch (event->key()) {
     case Qt::Key_Up:
         qDebug()<<"KeyBorad : press up";
-        emit moveTo(directionOfFront);
         break;
     case Qt::Key_Down:
         qDebug()<<"KeyBorad : press down";
-        emit moveTo(directionOfBehind);
         break;
     case Qt::Key_Left:
         qDebug()<<"KeyBorad : press left";
-        emit moveTo(directionOfLeft);
         break;
     case Qt::Key_Right:
         qDebug()<<"KeyBorad : press right";
-        emit moveTo(directionOfRight);
         break;
     default:
         break;
     }
 }
 
+/* 重写键盘释放事件 */
 void gameScreen::keyReleaseEvent(QKeyEvent *event)
 {
     switch (event->key()) {
@@ -121,8 +131,8 @@ void gameScreen::keyReleaseEvent(QKeyEvent *event)
     }
 }
 
-void gameScreen::initalScreen()
+/* 重写窗口关闭事件，发送 closed()信号 */
+void gameScreen::closeEvent(QCloseEvent *e)
 {
-    resize(500,500);
-    layout=new QHBoxLayout(this);
+    emit closed();
 }

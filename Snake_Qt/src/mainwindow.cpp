@@ -83,4 +83,6 @@ void MainWindow::initalGame()
     });
     /* 游戏发出的关闭游戏信号(此时游戏已做好善后处理)将触发游戏屏幕的关闭 */
     connect(game,&gameView::closeGame,screen,&gameScreen::close);
+    /* 游戏屏幕关闭产生的 closed 信号将触发游戏的清理操作 */
+    connect(screen,&gameScreen::closed,game,&gameView::clearView);
 }

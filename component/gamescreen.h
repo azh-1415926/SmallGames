@@ -16,18 +16,20 @@ public:
         directionOfLeft
     };
 
-signals:
-    void moveTo(enum moveDirection);
-    void clicked(const QPoint&);
-
-public slots:
-    void setGame(QWidget* game);
-
 protected:
     void mousePressEvent(QMouseEvent* event) override;
     void mouseReleaseEvent(QMouseEvent* event) override;
     void keyPressEvent(QKeyEvent* event) override;
     void keyReleaseEvent(QKeyEvent* event) override;
+    void closeEvent(QCloseEvent* e) override;
+
+public slots:
+    void setGame(QWidget* game);
+
+signals:
+    void moveTo(enum moveDirection);
+    void clicked(const QPoint&);
+    void closed();
 
 private:
     QPoint clickPoint;
