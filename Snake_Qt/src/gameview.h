@@ -15,18 +15,11 @@ public:
 
 protected:
     void timerEvent(QTimerEvent* e) override;
-    void closeEvent(QCloseEvent* e) override;
 
 public slots:
     void startGame();
-    void clickPoint(const QPoint &p);
+    void clearView();
     void moveTo(int direction);
-    void moving(int direction);
-    void updateHead(QPoint const& head);
-    void updateTail(QPoint const& tail);
-    void updatePoint(int pos);
-    void clearPoint(int pos);
-    void addFood();
 
 signals:
     void settleTime(double);
@@ -46,9 +39,14 @@ private:
     double startTime;
     QQueue<QPoint> snake;
     QGraphicsRectItem* food;
-    QList<QGraphicsRectItem*> snakeShape;
+    QList<QGraphicsRectItem*> blocks;
     void initalView();
     void initalGame();
-    void clearView();
     void settleGame();
+    void moving(int direction);
+    void updateHead(QPoint const& head);
+    void updateTail(QPoint const& tail);
+    void updateBlock(int pos);
+    void clearBlock(int pos);
+    void addFood();
 };
