@@ -1,6 +1,5 @@
 #pragma once
 #include <QWidget>
-#include <QLabel>
 #include <QGraphicsScene>
 #include <QGraphicsView>
 #include <QGraphicsItem>
@@ -17,11 +16,8 @@ protected:
 
 public slots:
     void startGame();
-    void updatePoint(int pos,int num);
-    void clearPoint(int pos);
     void clearView();
     void moveTo(int direction);
-    void settleGame();
 
 signals:
     void settleScore(int);
@@ -36,14 +32,18 @@ private:
     QList<QGraphicsTextItem*> numbers;
     double startTime;
     int timerId;
-    int array[4][4]={0};
+    int array[4][4];
     int maxNumber;
     int zeroCount;
-    // int flagOfInital;
+    int score;
+    int flagOfGame;
     int flagOfTime;
     void initalView();
     void initalGame();
+    void settleGame();
     void addNumber();
+    void updatePoint(int pos,int num);
+    void clearPoint(int pos);
     void updateScore(int score);
     QBrush getBrushByNum(int i);
     void moveFront();
