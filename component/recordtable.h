@@ -12,8 +12,8 @@ class recordTable : public QWidget {
 
     public slots:
         void setTableTitle(const QStringList& title);
-        void clear();
         void addRecord(const QStringList& record);
+        void clear();
     
     signals:
         ;
