@@ -1,12 +1,10 @@
 #pragma once
 #include <QMainWindow>
-#include <QTableWidget>
 #include "gameview.h"
 #include "recordtable.h"
 #include "gamescreen.h"
 
 class MainWindow : public QMainWindow
-
 {
     Q_OBJECT
 
