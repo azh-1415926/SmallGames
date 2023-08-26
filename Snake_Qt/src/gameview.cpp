@@ -149,16 +149,16 @@ void gameView::settleGame()
     /* 结算时间、长度 */
     emit settleTime((clock()-startTime)/1000.0);
     emit settleLength(snake.length());
-    /* 执行清理操作 */
-    clearView();
     /* 获取玩家选择的结果 */
     QMessageBox::Button result=QMessageBox::question(nullptr,"Game Over!","Do you want play again?",QMessageBox::Ok|QMessageBox::No,QMessageBox::No);
     /* 若为 Ok，则再次游戏，即调用 startGame()，用于初始化新的一次游戏，并返回 */
     if(result==QMessageBox::Ok){
+        /* 执行清理操作，并再次初始化游戏 */
+        clearView();
         startGame();
         return;
     }
-     /* 否则发送 closeGame()信号 */
+     /* 否则发送 closeGame()信号，外部接收到该信号会自动关闭游戏屏幕并调用 clearView() */
     emit closeGame();
 }
 

@@ -1,14 +1,10 @@
-cmake_minimum_required(VERSION 3.5)
-
-project(Snake VERSION 0.1 LANGUAGES CXX)
-
-set(CMAKE_PREFIX_PATH "D:/Qt/6.5.0/mingw_64")
-
+cmake_minimum_required(VERSION 3.5) # CMake install : https://cmake.org/download/
+project(Snake_Qt LANGUAGES CXX)
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
-
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # 请自行填写 qt 工具链所在路径
@@ -17,7 +13,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # 根目录
 set(ROOT_DIR ../)
 
-find_package(QT NAMES Qt5 REQUIRED COMPONENTS Widgets)
+find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
 aux_source_directory(./src srcs)
