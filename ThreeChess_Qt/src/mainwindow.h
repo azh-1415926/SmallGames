@@ -1,7 +1,5 @@
 #pragma once
-
 #include <QMainWindow>
-#include <QMenuBar>
 #include "gameview.h"
 #include "recordtable.h"
 #include "gamescreen.h"
