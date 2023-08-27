@@ -17,8 +17,9 @@ protected:
 
 public slots:
     void startGame();
+    void clearView();
     void clickPoint(const QPoint& p);
-    void getOptionAgain();
+    void doComputer();
 
 signals:
     void sendOption(int pos);
@@ -37,11 +38,10 @@ private:
     QPair<QColor,QColor> colorOfChequer;
     void initalView();
     void initalGame();
-    void clearView();
     void addChequer(int pos);
     void setChequer(int pos);
-    int getComputerOption();
     void switchNextPlayer();
+    int getComputerOption();
     int getPlayerOptionByPoint(const QPoint& p);
     bool isWin(int pos);
     void settleGame(const QString& tip);
