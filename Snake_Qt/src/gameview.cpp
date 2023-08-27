@@ -1,4 +1,5 @@
 #include "gameview.h"
+#include "constants.h"
 #include <QHBoxLayout>
 #include <QMessageBox>
 #include <QDebug>
@@ -108,14 +109,13 @@ void gameView::initalView()
     view->resize(500,500);
     view->setBackgroundBrush(QBrush(qRgb(107,142,35)));
     layout->addWidget(view);
-    /* 指定范围画上网格，矩形范围为 (25,25,450,450) */
-    QRect range(25,25,450,450);
+    /* 用 line 来临时存储线条指针 */
     QGraphicsLineItem* line=nullptr;
-    /* 设置线条的数量 n */
-    qreal n=8.0;
+    /* 指定范围画上网格，矩形范围在 constants.h 文件里 */
+    const QRect& range=RANGE;
     /* 线条之间的间隔 */
-    qreal gapOfX=range.width()/(n+1);
-    qreal gapOfY=range.height()/(n+1);
+    qreal gapOfX=GAPOFX;
+    qreal gapOfY=GAPOFY;
     /* 添加一个矩形到 group 中 */
     group->addToGroup(new QGraphicsRectItem(range));
     /* 在矩形范围内添加线条 */
