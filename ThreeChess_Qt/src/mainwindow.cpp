@@ -68,6 +68,8 @@ void MainWindow::initalGame()
     record->setTableTitle(QStringList()<<tr("Winner")<<tr("Cost Time"));
     /* 为游戏屏幕(gameScreen)设置游戏窗口(gameView) */
     screen->setGame(game);
+    /* 将屏幕的点击信号(clicked)连接到游戏的点击操作处理的槽函数 */
+    connect(screen,&gameScreen::clicked,game,&gameView::clickPoint);
     /* 获取游戏获胜的玩家，并记录起来 */
     connect(game,&gameView::settlePlayer,this,[=](const QString& player){
         info.first=player;

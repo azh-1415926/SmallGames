@@ -34,5 +34,6 @@ signals:
 private:
     QPoint clickPoint;
     QHBoxLayout* layout;
+    QWidget* game;
     void initalScreen();
 };

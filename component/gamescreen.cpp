@@ -17,6 +17,7 @@ gameScreen::~gameScreen()
 /* 设置游戏窗口 */
 void gameScreen::setGame(QWidget* game)
 {
+    this->game=game;
     layout->addWidget(game);
 }
 
@@ -26,20 +27,26 @@ void gameScreen::initalScreen()
     /* 调整窗口大小、设置垂直布局为整体布局 */
     resize(500,500);
     layout=new QHBoxLayout(this);
+    game=nullptr;
 }
 
 /* 重写鼠标点击事件，发送 clicked(const QPoint&)信号 */
 void gameScreen::mousePressEvent(QMouseEvent* event)
 {
     #if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
-        qDebug()<<"Mouse : press on "<<event->pos();
         clickPoint.rx()=event->pos().x();
         clickPoint.ry()=event->pos().y();
     #elif (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
-        qDebug()<<"Mouse : press on "<<event->position();
         clickPoint.rx()=event->position().x();
         clickPoint.ry()=event->position().y();
     #endif
+    /* 设置为相对位置 */
+    qDebug()<<"game pos: "<<game->geometry();
+    if(game!=nullptr){
+        clickPoint.rx()-=game->geometry().x();
+        clickPoint.ry()-=game->geometry().y();
+    }
+    qDebug()<<"Mouse : press on "<<clickPoint;
     emit clicked(clickPoint);
     grabMouse();
 }

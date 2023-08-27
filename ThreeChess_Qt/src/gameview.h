@@ -13,7 +13,7 @@ public:
     ~gameView();
 
 protected:
-    void mousePressEvent(QMouseEvent* event);
+    ;
 
 public slots:
     void startGame();

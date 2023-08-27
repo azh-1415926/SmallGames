@@ -1,13 +1,14 @@
 #include "gameview.h"
+#include "constants.h"
 #include <QHBoxLayout>
-#include <QMouseEvent>
 #include <QMessageBox>
 #include <QDebug>
 
 gameView::gameView(QWidget* parent)
     : QWidget(parent)
     , scene(new QGraphicsScene)
-    , view(new QGraphicsView(scene,this))
+    , view(new QGraphicsView(scene))
+    , group(new QGraphicsItemGroup)
     , flagOfGame(0)
     , currColor(qRgb(255,222,173))
     , colorOfChequer(Qt::black,Qt::white)
@@ -18,20 +19,9 @@ gameView::gameView(QWidget* parent)
 
 gameView::~gameView()
 {
-    
-}
-
-void gameView::mousePressEvent(QMouseEvent* event)
-{
-    qreal x,y;
-    #if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
-        x=event->pos().x();
-        y=event->pos().y();
-    #elif (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
-        x=event->position().x();
-        y=event->position().y();
-    #endif
-    clickPoint(QPoint(x,y));
+    delete scene;
+    delete view;
+    delete group;
 }
 
 void gameView::clickPoint(const QPoint &p)
@@ -59,11 +49,9 @@ void gameView::startGame()
         colorOfChequer.second=option?Qt::black:Qt::white;
         option=QMessageBox::question(NULL,"Game Initalize...","choose the first player!","your","computer");
         currColor=option?colorOfChequer.second:colorOfChequer.first;
-        // currColor=option?colorOfChequer.first:colorOfChequer.second;
     }
     flagOfGame=1;
     startTime=clock();
-    // currColor=qRgb(255,222,173);
     addChequer(-1);
 }
 
@@ -75,12 +63,10 @@ void gameView::initalView()
     view->resize(500,500);
     view->setBackgroundBrush(QBrush(QColor(qRgb(255,222,173))));
     QPen pen(Qt::DotLine);
-    group=new QGraphicsItemGroup;
     QGraphicsLineItem* line=nullptr;
-    QRect range(100,100,300,300);
-    qreal n=2.0;
-    qreal gapOfX=range.width()/(n+1);
-    qreal gapOfY=range.height()/(n+1);
+    const QRect& range=RANGE;
+    qreal gapOfX=GAPOFX;
+    qreal gapOfY=GAPOFY;
     group->addToGroup(new QGraphicsRectItem(range));
     qreal x=range.x()+gapOfX;
     qreal y=range.y()+gapOfY;
@@ -152,7 +138,7 @@ void gameView::setChequer(int pos)
     chequers[pos]->setBrush(QBrush(currColor));
     scene->addItem(chequers[pos]);
     if(isWin(pos)){
-        settleGame(" is wins!");
+        settleGame(" is wins");
         return;
     }else{
         for(int i=0;i<9;i++){
@@ -170,35 +156,27 @@ void gameView::setChequer(int pos)
 
 int gameView::getPlayerOptionByPoint(const QPoint& p)
 {
-    int x=p.x(),y=p.y();
-    if(x>100&&x<400&&y>100&&y<400){
-        if(x>100&&x<200){
-            if(y>100&&y<200){
-                return 0;
-            }else if(y>200&&y<300){
-                return 3;
-            }else if(y>300&&y<400){
-                return 6;
-            }
-        }else if(x>200&&x<300){
-            if(y>100&&y<200){
-                return 1;
-            }else if(y>200&&y<300){
-                return 4;
-            }else if(y>300&&y<400){
-                return 7;
-            }
-        }else if(x>300&&x<400){
-            if(y>100&&y<200){
-                return 2;
-            }else if(y>200&&y<300){
-                return 5;
-            }else if(y>300&&y<400){
-                return 8;
-            }
-        }
-    }
-    return -1;
+    /* range is (100,100) to (400,400) */
+    const QList<QGraphicsItem*>& items=group->childItems();
+    qDebug()<<"scenePos is :"<<items[0]->scenePos();
+    const QPointF& posOfScene=items[0]->scenePos()+items[0]->boundingRect().center();
+    const QPoint& posOfView=view->mapFromScene(posOfScene);
+    qDebug()<<"viewPos is :"<<posOfView;
+    const QPointF& base=posOfView-items[0]->boundingRect().center()+view->pos();
+    qDebug()<<"base is :"<<base;
+    const QRect& range=RANGE;
+    qreal baseOfX=range.x();
+    qreal baseOfY=range.y();
+    qreal topOfX=range.x()+range.width();
+    qreal topOfY=range.y()+range.height();
+    qreal x=p.x()-base.x();
+    qreal y=p.y()-base.y();
+    qDebug()<<"pos is x:"<<x<<"y:"<<y;
+    if(x<=baseOfX||x>=topOfX||y<=baseOfY||y>=topOfY)
+        return -1;
+    int i=(y-baseOfY)/GAPOFY;
+    int j=(x-baseOfX)/GAPOFX;
+    return i*(NX+1)+j;
 }
 
 bool gameView::isWin(int pos)
@@ -253,7 +231,7 @@ void gameView::settleGame(const QString &tip)
     emit settlePlayer(player);
     emit settleTime((clock()-startTime)/1000.0);
     QMessageBox::Button result;
-    result=QMessageBox::question(nullptr,"Game Over!",player+tip,QMessageBox::Ok|QMessageBox::No,QMessageBox::No);
+    result=QMessageBox::question(nullptr,"Game Over!",player+tip+",do you want to play again?",QMessageBox::Ok|QMessageBox::No,QMessageBox::No);
     if(result==QMessageBox::Ok)
         startGame();
     else{
