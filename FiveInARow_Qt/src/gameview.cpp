@@ -50,7 +50,7 @@ void gameView::startGame()
 /* 清理游戏 */
 void gameView::clearView(){
     /* 清理屏幕上所有的棋子 */
-    for(int i=0;i<9;i++){
+    for(int i=0;i<225;i++){
         if(chequers[i]!=nullptr){
             delete chequers[i];
             chequers[i]=nullptr;
@@ -121,7 +121,7 @@ void gameView::initalGame()
     /* 初始化随机数种子*/
     srand(time(NULL));
     /* 初始化屏幕上的棋子，默认为 nullptr */
-    for(int i=0;i<9;i++)
+    for(int i=0;i<225;i++)
         chequers<<nullptr;
 }
 
@@ -185,11 +185,11 @@ void gameView::addChequer(int pos)
 void gameView::setChequer(int pos)
 {
     /* 获取 pos 的行列信息 */
-    int row=pos/3;
-    int column=pos%3;
-    /* 棋子为圆形，半径为 70 像素，在格子边距的 15 像素位置落棋 */
+    int row=pos/15;
+    int column=pos%15;
+    /* 棋子为圆形，半径为颜色方块的 7/10，在格子边距的 3/20 像素位置落棋 */
     chequers[pos]=new QGraphicsEllipseItem;
-    chequers[pos]->setRect(115+column*100,115+row*100,70,70);
+    chequers[pos]->setRect(RANGE.x()+GAPOFX*3/20+column*GAPOFX,RANGE.y()+GAPOFY*3/20+row*GAPOFY,GAPOFX*7/10,GAPOFY*7/10);
     /* 设置棋子颜色，并落棋 */
     chequers[pos]->setBrush(QBrush(currColor));
     scene->addItem(chequers[pos]);
@@ -223,7 +223,7 @@ void gameView::switchNextPlayer()
 
 /* 获取电脑落棋位置 */
 int gameView::getComputerOption(){
-    return rand()%9;
+    return rand()%225;
 }
 
 /* 根据玩家点击坐标获取玩家落棋位置 */
