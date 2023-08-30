@@ -256,45 +256,123 @@ int gameView::getPlayerOptionByPoint(const QPoint& p)
 /* 判断某位置落棋是否会导致游戏胜利 */
 bool gameView::isWin(int pos)
 {
+    int _row=15,_column=15;
+    int _linkedCount=5;
     /* row、column 为计算出的行号和列号，count 为连珠数，maxcount 为最大连珠数 */
-    int row=pos/3;
-    int column=pos%3;
+    int row=pos/_column;
+    int column=pos%_column;
     int count=1;
-    int maxcount=1;
+    int flag=1;
+    int rflag=1;
     const QColor& color=chequers[pos]->brush().color();
-    for(int i=1;i<3;++i){
-        if(chequers[(row+i)%3*3+column]==nullptr)
+    //horizon
+    for(int i=1;i<_linkedCount;++i){
+        if(flag&&column+i<_column){
+            if(chequers[row*_column+column+i]==nullptr)
+                break;
+            if(color==chequers[row*_column+column+i]->brush().color()){
+                ++count;
+            }else{
+                count=count-(i-1);
+                flag=0;
+            }
+        }
+        if(rflag&&column-i>=0){
+            if(chequers[row*_column+column-i]==nullptr)
+                break;
+            if(color==chequers[row*_column+column-i]->brush().color()){
+                ++count;
+            }else{
+                count=count-(i-1);
+                rflag=0;
+            }
+        }
+        if(count>=_linkedCount||flag==0&&rflag==0){
             break;
-        if(color==chequers[(row+i)%3*3+column]->brush().color())
-            ++count;
+        }
     }
-    maxcount=(maxcount<count)?(count):(maxcount);
+    if(count>=_linkedCount)
+        return 1;
     count=1;
-    for(int i=1;i<3;++i){
-        if(chequers[row*3+(column+i)%3]==nullptr)
+    flag=1;
+    rflag=1;
+    //vertical
+    for(int i=1;i<_linkedCount;++i){
+        if(flag&&row+i<_row){
+            if(chequers[(row+i)*_column+column]&&color==chequers[(row+i)*_column+column]->brush().color()){
+                ++count;
+            }else{
+                count=count-(i-1);
+                flag=0;
+            }
+        }
+        if(rflag&&row-i>=0){
+            if(chequers[(row-i)*_column+column]&&color==chequers[(row-i)*_column+column]->brush().color()){
+                ++count;
+            }else{
+                count=count-(i-1);
+                rflag=0;
+            }
+        }
+        if(count>=_linkedCount||flag==0&&rflag==0){
             break;
-        if(color==chequers[row*3+(column+i)%3]->brush().color())
-            ++count;
+        }
     }
-    maxcount=(maxcount<count)?(count):(maxcount);
+    if(count>=_linkedCount)
+        return 1;
     count=1;
-    for(int i=1;i<3&&(row==column);++i){
-        if(chequers[(row+i)%3*3+(column+i)%3]==nullptr)
+    flag=1;
+    rflag=1;
+    //
+    for(int i=1;i<_linkedCount;++i){
+        if(flag&&row+i<_row&&column+i<_column){
+            if(chequers[(row+i)*_column+column+i]&&color==chequers[(row+i)*_column+column+i]->brush().color()){
+                ++count;
+            }else{
+                count=count-(i-1);
+                flag=0;
+            }
+        }
+        if(rflag&&row-i>=0&&column-i>=0){
+            if(chequers[(row-i)*_column+column-i]&&color==chequers[(row-i)*_column+column-i]->brush().color()){
+                ++count;
+            }else{
+                count=count-(i-1);
+                rflag=0;
+            }
+        }
+        if(count>=_linkedCount||flag==0&&rflag==0){
             break;
-        if(color==chequers[(row+i)%3*3+(column+i)%3]->brush().color())
-            ++count;
+        }
     }
-    maxcount=(maxcount<count)?(count):(maxcount);
+    if(count>=_linkedCount)
+        return 1;
     count=1;
-    for(int i=1;i<3&&((row+column)==2);++i){
-        if(chequers[(row+i)%3*3+(column+2*i)%3]==nullptr)
+    flag=1;
+    rflag=1;
+    //
+    for(int i=1;i<_linkedCount;++i){
+        if(flag&&row-i>=0&&column+i<_column){
+            if(chequers[(row-i)*_column+column+i]&&color==chequers[(row-i)*_column+column+i]->brush().color()){
+                ++count;
+            }else{
+                count=count-(i-1);
+                flag=0;
+            }
+        }
+        if(rflag&&row+i<_row&&column-i>=0){
+            if(chequers[(row+i)*_column+column-i]&&color==chequers[(row+i)*_column+column-i]->brush().color()){
+                ++count;
+            }else{
+                count=count-(i-1);
+                rflag=0;
+            }
+        }
+        if(count>=_linkedCount||flag==0&&rflag==0){
             break;
-        if(color==chequers[(row+i)%3*3+(column+2*i)%3]->brush().color())
-            ++count;
+        }
     }
-    maxcount=(maxcount<count)?(count):(maxcount);
-    /* 若最大连珠数为 3，则游戏胜利，返回 true，否则 false */
-    if(maxcount==3)
+    if(count>=_linkedCount)
         return true;
     return false;
 }
