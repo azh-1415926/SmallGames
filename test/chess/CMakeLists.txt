@@ -1,0 +1,7 @@
+cmake_minimum_required(VERSION 2.8.0)
+set(PROJECT_NAME chess)
+set(ROOT_DIR ${CMAKE_CURRENT_LIST_DIR}/../..)
+project(${PROJECT_NAME})
+add_subdirectory(${ROOT_DIR}/modules MODULES_binnary_dir)
+add_executable(${PROJECT_NAME} chess.c)
+target_link_libraries(${PROJECT_NAME} PRIVATE MODULES)

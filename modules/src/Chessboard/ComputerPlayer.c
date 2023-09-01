@@ -1,10 +1,15 @@
-#include "ComputerPlayer.h"
+#include <ChessBoard/ComputerPlayer.h>
+#include <stdio.h>
+
 static bool(*_judgeInvalid)(int)=NULL;
-void setJudgeFunc(bool(*judge)(int)){
+
+void setJudgeFunc(bool(*judge)(int))
+{
     _judgeInvalid=judge;
 }
 
-int getOptionFromAI(){
+int getOptionFromAI()
+{
     int option=-1;
     // if(playerOption!=-1){
     //     int row=playerOption/3;

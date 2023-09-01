@@ -1,6 +1,7 @@
-#include "ChessBoard.h"
-#include "GameControl.h"
-#include "ComputerPlayer.h"
+#include <Chessboard/ChessBoard.h>
+#include <Chessboard/GameControl.h>
+#include <Chessboard/ComputerPlayer.h>
+
 int main(){
     initalChessBoard(8,8,4,'-');
     for(int i=0;i<64;i++){
