@@ -1,5 +1,7 @@
-#include "GameMap.h"
-int main(){
+#include <GameMap/GameMap.h>
+
+int main()
+{
     setBoard('=','^','+');
     initalizeGameMap(6,8,' ');
     showGameMap();
