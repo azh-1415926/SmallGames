@@ -56,8 +56,10 @@ void gameView::clearView()
     /* 结束定时器的运行、将屏幕上所有数字清零 */
     killTimer(timerId);
     /* 清空屏幕上的颜色方块、数组文本 */
-    for(int i=0;i<16;i++){
-        if(blocks[i]!=nullptr){
+    for(int i=0;i<16;i++)
+    {
+        if(blocks[i]!=nullptr)
+        {
             delete blocks[i];
             blocks[i]=nullptr;
             numbers[i]->setPlainText("");
@@ -77,7 +79,8 @@ void gameView::moveTo(int direction)
     /* 用 preDirection 记录上一次的移动方向 */
     static int preDirection;
     /* 为相应的移动方向计算移动后的数字 */
-    switch(direction){
+    switch(direction)
+    {
     case 0:
         moveFront();
         qDebug()<<"move front";
@@ -131,7 +134,8 @@ void gameView::initalView()
     /* 在矩形范围内添加线条 */
     qreal x=range.x()+gapOfX;
     qreal y=range.y()+gapOfY;
-    for(;x<range.x()+range.width()&&y<range.y()+range.height();x+=gapOfX,y+=gapOfY){
+    for(;x<range.x()+range.width()&&y<range.y()+range.height();x+=gapOfX,y+=gapOfY)
+    {
         /* 添加纵向的线条，其横坐标不变，设置线条的 QPen，并添加到 group 中 */
         line=new QGraphicsLineItem(range.x(),y,range.x()+range.width(),y);
         line->setPen(pen);
@@ -152,15 +156,16 @@ void gameView::initalGame()
     srand(time(NULL));
     /* 初始化 4x4 网格上的方块显示、数字显示 */
     QFont font;
-    font.setPointSize(25);
-    for(int i=0;i<16;i++){
+    font.setPointSize((GAPOFX+GAPOFY)/2/4);
+    for(int i=0;i<16;i++)
+    {
         /* blocks 数组存储着屏幕上显示数字颜色的方块的 QGraphicsRectItem* 指针，无方块为 nullptr */
         blocks<<nullptr;
         /* numbers 数组存储着屏幕上显示数字的 QGraphicsTextItem* 指针，无数字，文本内容为 "" */
         numbers<<new QGraphicsTextItem;
         /* 设置所显示数字的字体、坐标、放置优先级(默认为 0，即按放置顺序的先后覆盖，设置为 1，避免被颜色方块遮挡) */
         numbers[i]->setFont(font);
-        numbers[i]->setPos(50+i%4*100,75+i/4*100);
+        numbers[i]->setPos(RANGE.x()+i%4*GAPOFX,RANGE.y()+GAPOFY/4+i/4*GAPOFY);
         numbers[i]->setZValue(1);
         /* 由于当前没有颜色方块，故只需要将显示数字的文本添加到 group 中 */
         group->addToGroup(numbers[i]);
@@ -188,7 +193,8 @@ void gameView::settleGame()
     if(result==QMessageBox::Ok)
         startGame();
     /* 否则执行清理操作、并发送 closeGame()信号 */
-    else{
+    else
+    {
         clearView();
         emit closeGame();
     }
@@ -201,7 +207,8 @@ void gameView::addNumber()
     int pos=-1;
     int num=-1;
     /* 若随机到的 pos 位置上已有数字，则再次随机生成一个 pos */
-    while(pos==-1||pos!=-1&&array[pos/4][pos%4]!=0){
+    while(pos==-1||pos!=-1&&array[pos/4][pos%4]!=0)
+    {
         pos=rand()%16;
         /* 若屏幕已被占满则返回 */
         if(zeroCount==0)
@@ -219,8 +226,9 @@ void gameView::addNumber()
 void gameView::updatePoint(int pos,int num)
 {
     /* 若颜色方块为空，则创建一个新的，并将其添加到 group 中 */
-    if(blocks[pos]==nullptr){
-        blocks[pos]=new QGraphicsRectItem(50+pos%4*100,50+pos/4*100,100,100);
+    if(blocks[pos]==nullptr)
+    {
+        blocks[pos]=new QGraphicsRectItem(RANGE.x()+pos%4*GAPOFX,RANGE.y()+pos/4*GAPOFY,GAPOFX,GAPOFY);
         group->addToGroup(blocks[pos]);
     }
     /* str 为数字文本内容 */
@@ -230,10 +238,10 @@ void gameView::updatePoint(int pos,int num)
         由于方块内只能容纳 4 位数字(总共 100 像素)，而数字文本也在 1-4 位之间
         而减去当前数字的长度并 /2.0(保留小数)再 * 1 位数字的大小(1位便是 25)就能得出合适的偏移量大小
     */
-    qreal offset=(4-str.length())/2.0*25;
+    qreal offset=(4-str.length())/2.0*GAPOFX/4;
     /* 设置数字的文本、坐标，设置颜色方块的笔刷(更新颜色) */
     numbers[pos]->setPlainText(str);
-    numbers[pos]->setPos(50+pos%4*100+offset,75+pos/4*100);
+    numbers[pos]->setPos(RANGE.x()+pos%4*GAPOFX+offset,RANGE.y()+GAPOFY/4+pos/4*GAPOFY);
     blocks[pos]->setBrush(getBrushByNum(num));
 }
 
@@ -241,7 +249,8 @@ void gameView::updatePoint(int pos,int num)
 void gameView::clearPoint(int pos)
 {
     /* 若该位置上的颜色方块不为空，才释放并将该指针置空，且将数字文本清空 */
-    if(blocks[pos]!=nullptr){
+    if(blocks[pos]!=nullptr)
+    {
         delete blocks[pos];
         blocks[pos]=nullptr;
         numbers[pos]->setPlainText("");
@@ -262,7 +271,8 @@ void gameView::updateScore(int num)
 /* 获取指定数字的颜色笔刷 */
 QBrush gameView::getBrushByNum(int i)
 {
-    switch (i) {
+    switch (i)
+    {
     case 2:
         //玉米丝
         return QBrush(qRgb(255,248,220));

@@ -3,7 +3,7 @@
 #include <QRect>
 
 /* 矩形范围 */
-const QRect RANGE={50,50,400,400};
+const QRect RANGE={50,50,300,300};
 /* x 轴方向线条数量 */
 const qreal NX=3.0;
 /* y 轴方向线条数量 */

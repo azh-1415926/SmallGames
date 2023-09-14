@@ -1,6 +1,9 @@
 #include "mainwindow.h"
+
 #include <QMenuBar>
 #include <QMessageBox>
+#include <QVBoxLayout>
+#include <QPushButton>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -81,4 +84,24 @@ void MainWindow::initalGame()
     });
     /* 游戏发出的关闭游戏信号(此时游戏已做好善后处理)将触发游戏屏幕的关闭 */
     connect(game,&gameView::closeGame,screen,&gameScreen::close);
+    /* 添加四个按钮 */
+    QWidget* areaOfBtns=new QWidget(this);
+    setCentralWidget(areaOfBtns);
+    QVBoxLayout* layout=new QVBoxLayout(areaOfBtns);
+    QPushButton* startBtn=new QPushButton("start game");
+    QPushButton* recordBtn=new QPushButton("open record");
+    QPushButton* clearBtn=new QPushButton("clear record");
+    QPushButton* exitBtn=new QPushButton("exit");
+    layout->addWidget(startBtn);
+    layout->addWidget(recordBtn);
+    layout->addWidget(clearBtn);
+    layout->addWidget(exitBtn);
+    /* 为按钮添加触发操作 */
+    connect(startBtn,&QPushButton::clicked,this,[=](){
+        screen->show();
+        game->startGame();
+    });
+    connect(recordBtn,&QPushButton::clicked,record,&QWidget::show);
+    connect(clearBtn,&QPushButton::clicked,record,&recordTable::clear);
+    connect(exitBtn,&QPushButton::clicked,this,&QMainWindow::close);
 }
