@@ -26,10 +26,10 @@ typedef struct Tuple
 //Block's shape,width,height,point(bottom-left corner)
 typedef struct Block
 {
-    BlockShape shape;
+    enum BlockShape shape;
     int width;
     int height;
     int point;
 }Block;
-Tuple getBlockPosition(Block* block);
+Tuple getBlockPosition(struct Block* block);
 #endif /* _BLOCKS_H_ */

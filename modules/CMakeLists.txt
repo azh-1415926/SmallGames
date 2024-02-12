@@ -1,4 +1,8 @@
+project(MODULES)
+
 file(GLOB_RECURSE srcs CONFIGURE_DEPENDS src/*.c include/*.h)
-set(ROOT_DIR ${CMAKE_CURRENT_LIST_DIR}/..)
-add_library(MODULES STATIC ${srcs})
-target_include_directories(MODULES PUBLIC include)
+
+add_library(${PROJECT_NAME} STATIC ${srcs})
+target_include_directories(${PROJECT_NAME} PUBLIC include)
+
+add_subdirectory(Qt)
