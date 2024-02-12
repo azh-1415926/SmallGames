@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.5) # CMake install : https://cmake.org/download/
 project(Snake_Qt LANGUAGES CXX)
+
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
@@ -16,13 +17,34 @@ set(ROOT_DIR ../)
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
-aux_source_directory(./src srcs)
-aux_source_directory(${ROOT_DIR}/component components)
+file(GLOB_RECURSE incs include/*.h*)
+file(GLOB_RECURSE srcs src/*.c*)
 
-add_executable(${PROJECT_NAME}
-    # WIN32 # 若需要控制台调试可以注释这一条 # If you need a terminal for debug, please comment this statement
+# Specify MSVC UTF-8 encoding
+add_compile_options("$<$<C_COMPILER_ID:MSVC>:/utf-8>")
+add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
+
+set(PROJECT_SOURCES
+    ${incs}
     ${srcs}
-    ${components}
 )
+
+if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
+    qt_add_executable(${PROJECT_NAME}
+        MANUAL_FINALIZATION
+        ${PROJECT_SOURCES}
+    )
+else()
+    if(ANDROID)
+        add_library(${PROJECT_NAME} SHARED
+            ${PROJECT_SOURCES}
+        )
+    else()
+        add_executable(${PROJECT_NAME}
+            ${PROJECT_SOURCES}
+        )
+    endif()
+endif()
+
+target_include_directories(${PROJECT_NAME} PRIVATE include)
 target_link_libraries(${PROJECT_NAME} PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
-target_include_directories(${PROJECT_NAME} PRIVATE ${ROOT_DIR}/component)

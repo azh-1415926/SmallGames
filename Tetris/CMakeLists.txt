@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 2.8.0)
-set(PROJECT_NAME tetris)
-set(SRC_LIST Block.c GameMap.c main.c)
-project(${PROJECT_NAME})
-add_executable(${PROJECT_NAME} ${SRC_LIST})
+project(Tetris)
+
+aux_source_directory(src srcs)
+
+add_executable(${PROJECT_NAME} ${srcs})
+target_include_directories(${PROJECT_NAME} PRIVATE include)
